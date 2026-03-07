@@ -11,21 +11,29 @@
         <h1 id="debugTrigger" style="cursor: help;">English Questions</h1>
 
         <div id="debugOverlay" class="debug-overlay hidden">
-        <div class="debug-content">
-            <h3>Available System Voices <button id="closeDebug">X</button></h3>
-            <div class="table-scroll">
-                <table id="voiceTable">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Lang</th>
-                            <th>Default</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
+            <div class="debug-content">
+                <h3>Available System Voices <button id="closeDebug">X</button></h3>
+                
+                <div style="text-align: left; margin-bottom: 10px; padding: 5px; background: #fff3cd; border-radius: 8px;">
+                    <label style="cursor: pointer; font-weight: bold;">
+                        <input type="checkbox" id="priorityVoiceTick"> Use selected voice from table (Priority)
+                    </label>
+                </div>
+
+                <div class="table-scroll">
+                    <table id="voiceTable">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Lang</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
             </div>
-        </div>
         </div>
         
         <div class="top-controls">

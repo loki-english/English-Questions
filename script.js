@@ -21,6 +21,9 @@ let history = [];
 let timerInterval;
 let seconds = 0;
 let isPaused = false;
+let selectedSystemVoice = localStorage.getItem('selectedSystemVoice') || null;
+const priorityVoiceTick = document.getElementById('priorityVoiceTick');
+priorityVoiceTick.checked = localStorage.getItem('priorityVoice') === 'true';
 
 // --- DOM Elements ---
 const leftSlot = document.getElementById('leftSlot');
@@ -43,39 +46,34 @@ const btnDeal = document.getElementById('btnDeal');
 function speak(text) {
     window.speechSynthesis.cancel();
     const utterance = new SpeechSynthesisUtterance(text);
-    const isMale = voiceSelect.value === 'male';
     const voices = window.speechSynthesis.getVoices();
 
-    const getBestVoice = (vList) => {
-        let voice = vList.find(v => v.lang.includes('en-US') && v.name.includes('Natural') && 
-                   (isMale ? v.name.includes('Guy') : v.name.includes('Aria')));
-
-        if (!voice) {
-            voice = isMale ? vList.find(v => v.name.includes('Google') && v.name.includes('Male')) 
-                           : vList.find(v => v.name === "Google US English" || (v.name.includes('Google') && v.name.includes('Female')));
+    // Nếu tick chọn "Ưu tiên" và đã có giọng được chọn trong bảng
+    if (priorityVoiceTick.checked && selectedSystemVoice) {
+        const voice = voices.find(v => v.name === selectedSystemVoice);
+        if (voice) {
+            utterance.voice = voice;
+            utterance.lang = voice.lang;
         }
-        
-        if (!voice) {
-        voice = vList.find(v => v.lang.includes('en-US') && 
-                   v.name.toLowerCase().includes(isMale ? 'male' : 'female'));
-        }
+    } else {
+        // Logic chọn giọng Male/Female mặc định của bạn
+        const isMale = voiceSelect.value === 'male';
+        const getBestVoice = (vList) => {
+            let voice = vList.find(v => v.lang.includes('en-US') && v.name.includes('Natural') && 
+                       (isMale ? v.name.includes('Guy') : v.name.includes('Aria')));
+            if (!voice) {
+                voice = isMale ? vList.find(v => v.name.includes('Google') && v.name.includes('Male')) 
+                               : vList.find(v => v.name === "Google US English" || (v.name.includes('Google') && v.name.includes('Female')));
+            }
+            if (!voice) voice = vList.find(v => v.lang.includes('en-US'));
+            return voice;
+        };
 
-        if (!voice) {
-            voice = vList.find(v => v.lang.includes('en-US') && 
-                       (isMale ? (v.name.includes('David')) : (v.name.includes('Zira'))));
+        const selectedVoice = getBestVoice(voices);
+        if (selectedVoice) {
+            utterance.voice = selectedVoice;
+            utterance.lang = selectedVoice.lang;
         }
-
-        if (!voice) {
-        voice = vList.find(v => v.lang.includes('en-US'));
-        }
-        
-        return voice;
-    };
-
-    const selectedVoice = getBestVoice(voices);
-    if (selectedVoice) {
-        utterance.voice = selectedVoice;
-        utterance.lang = selectedVoice.lang;
     }
 
     utterance.rate = 0.9;
@@ -292,16 +290,63 @@ const closeDebug = document.getElementById('closeDebug');
 const voiceTableBody = document.querySelector('#voiceTable tbody');
 
 function showDebugVoices() {
-    const voices = window.speechSynthesis.getVoices();
-    voiceTableBody.innerHTML = ''; // Clear cũ
+    // Get all system voices
+    let allVoices = window.speechSynthesis.getVoices();
+    
+    // FILTER: Only keep voices where language starts with 'en'
+    const voices = allVoices.filter(v => v.lang.toLowerCase().startsWith('en'));
+
+    const isMale = voiceSelect.value === 'male';
+    
+    // Logic to determine current active voice for Status display
+    let currentActiveVoiceName = "";
+    if (priorityVoiceTick.checked && selectedSystemVoice) {
+        currentActiveVoiceName = selectedSystemVoice;
+    } else {
+        const getBest = (vList) => {
+            return vList.find(v => v.lang.includes('en-US') && v.name.includes('Natural') && (isMale ? v.name.includes('Guy') : v.name.includes('Aria'))) ||
+                   vList.find(v => v.lang.includes('en-US') && v.name.toLowerCase().includes(isMale ? 'male' : 'female')) ||
+                   vList.find(v => v.lang.includes('en-US'));
+        };
+        const best = getBest(voices); // Using filtered list
+        if (best) currentActiveVoiceName = best.name;
+    }
+
+    voiceTableBody.innerHTML = ''; 
 
     voices.forEach(voice => {
         const row = document.createElement('tr');
+        const isCurrentlySelected = (voice.name === currentActiveVoiceName);
+        
+        if (isCurrentlySelected) row.style.backgroundColor = "#e7f1ff";
+
         row.innerHTML = `
-            <td>${voice.name}</td>
+            <td class="voice-name" style="cursor:pointer; font-weight:${isCurrentlySelected ? 'bold' : 'normal'}">
+                ${voice.name}
+            </td>
             <td>${voice.lang}</td>
-            <td>${voice.default ? '✅' : ''}</td>
+            <td class="status-cell">${isCurrentlySelected ? '<span style="color: #198754;">● Selected</span>' : ''}</td>
+            <td><button class="btn-test" style="padding: 2px 8px; cursor: pointer;">Test</button></td>
         `;
+
+        // Click name to select
+        row.querySelector('.voice-name').onclick = () => {
+            selectedSystemVoice = voice.name;
+            priorityVoiceTick.checked = true;
+            localStorage.setItem('selectedSystemVoice', voice.name);
+            localStorage.setItem('priorityVoice', 'true');
+            showDebugVoices(); 
+        };
+
+        // Test voice button
+        row.querySelector('.btn-test').onclick = (e) => {
+            e.stopPropagation();
+            window.speechSynthesis.cancel();
+            const ut = new SpeechSynthesisUtterance("Testing this English voice.");
+            ut.voice = voice;
+            window.speechSynthesis.speak(ut);
+        };
+
         voiceTableBody.appendChild(row);
     });
 
@@ -349,6 +394,25 @@ const syncSettings = () => {
         syncSettings();
         if (el.id === 'timerMode') initGame();
     });
+});
+
+voiceSelect.addEventListener('change', () => {
+    // Reset lựa chọn trong bảng
+    selectedSystemVoice = null;
+    priorityVoiceTick.checked = false;
+    
+    // Xóa khỏi bộ nhớ
+    localStorage.removeItem('selectedSystemVoice');
+    localStorage.setItem('priorityVoice', 'false');
+    
+    // Nếu bảng debug đang mở thì cập nhật lại giao diện
+    if (!debugOverlay.classList.contains('hidden')) {
+        showDebugVoices();
+    }
+});
+
+priorityVoiceTick.addEventListener('change', () => {
+    localStorage.setItem('priorityVoice', priorityVoiceTick.checked);
 });
 
 window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
