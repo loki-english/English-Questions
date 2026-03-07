@@ -22,6 +22,7 @@ body {
 
 .control-box {
     background: var(--bg-soft); padding: 10px 15px; border-radius: 15px;
+    justify-content: space-between;
     display: flex; align-items: center; gap: 10px; margin-bottom: 8px;
 }
 
@@ -163,6 +164,14 @@ label:has(input[disabled]) {
 .table-scroll {
     overflow-y: auto;
     border: 1px solid #ddd;
+}
+
+#inputTime {
+    width: 50px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
 }
 
 #voiceTable {
