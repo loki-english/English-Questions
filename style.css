@@ -120,6 +120,69 @@ label:has(input[disabled]) {
 
 .status { font-weight: bold; color: #7f8c8d; font-size: 1.1rem; }
 
+/* Debug Overlay Styles */
+.debug-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.8);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.debug-content {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    max-width: 90%;
+    max-height: 80%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.debug-content h3 {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0;
+}
+
+#closeDebug {
+    background: #ff4d4d;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.table-scroll {
+    overflow-y: auto;
+    border: 1px solid #ddd;
+}
+
+#voiceTable {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    text-align: left;
+}
+
+#voiceTable th, #voiceTable td {
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+}
+
+#voiceTable th {
+    background: #f8f9fa;
+    position: sticky;
+    top: 0;
+}
+
 /* Mobile Optimization */
 @media (max-width: 768px) {
     .top-controls { flex-direction: column; align-items: stretch; gap: 15px; }

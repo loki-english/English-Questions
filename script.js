@@ -285,6 +285,40 @@ function togglePause() {
     }
 }
 
+// --- Debug Logic ---
+const debugTrigger = document.getElementById('debugTrigger');
+const debugOverlay = document.getElementById('debugOverlay');
+const closeDebug = document.getElementById('closeDebug');
+const voiceTableBody = document.querySelector('#voiceTable tbody');
+
+function showDebugVoices() {
+    const voices = window.speechSynthesis.getVoices();
+    voiceTableBody.innerHTML = ''; // Clear cũ
+
+    voices.forEach(voice => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${voice.name}</td>
+            <td>${voice.lang}</td>
+            <td>${voice.default ? '✅' : ''}</td>
+        `;
+        voiceTableBody.appendChild(row);
+    });
+
+    debugOverlay.classList.remove('hidden');
+}
+
+debugTrigger.addEventListener('click', showDebugVoices);
+
+closeDebug.addEventListener('click', () => {
+    debugOverlay.classList.add('hidden');
+});
+
+// Đóng khi click ra ngoài bảng
+debugOverlay.addEventListener('click', (e) => {
+    if (e.target === debugOverlay) debugOverlay.classList.add('hidden');
+});
+
 // --- Event Listeners ---
 leftSlot.onclick = (e) => { 
     if (e.target === leftSlot && !isPaused) dealCard(); 
