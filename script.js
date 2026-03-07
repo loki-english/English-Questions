@@ -1,3 +1,8 @@
+/**
+ * ENGLISH FLASHCARDS PRO - LOGIC SCRIPT
+ * Cleaned and Optimized Version
+ */
+
 const questions = [
     "How are you?", "What are you doing?", "Where are you?", "Are you busy?", "What's up?",
     "Did you eat yet?", "Where are you going?", "What time is it?", "Are you free today?", "Can you help me?",
@@ -11,92 +16,84 @@ const questions = [
     "Did you check?", "Why did you do that?", "Why did you say that?", "What do you need?", "What do you like?"
 ];
 
+// --- Global State ---
 let history = [];
-let timerInterval, seconds = 0;
+let timerInterval;
+let seconds = 0;
+let isPaused = false;
 
+// --- DOM Elements ---
 const leftSlot = document.getElementById('leftSlot');
 const countDisplay = document.getElementById('countDisplay');
 const timerDisplay = document.getElementById('timerDisplay');
 const timerContainer = document.getElementById('timerContainer');
+const voiceSelect = document.getElementById('voiceSelect');
+const timerMode = document.getElementById('timerMode');
+const inputTime = document.getElementById('inputTime');
+const shuffleTick = document.getElementById('shuffleTick');
+const showTextTick = document.getElementById('showTextTick');
+const btnPause = document.getElementById('btnPause');
+const btnReset = document.getElementById('btnReset');
+const btnUndo = document.getElementById('btnUndo');
+const btnDeal = document.getElementById('btnDeal');
 
+/**
+ * Speech Synthesis Logic
+ * @param {string} text - The question text to speak
+ */
 function speak(text) {
-    // Stop any current speech to prevent overlap
     window.speechSynthesis.cancel();
-
     const utterance = new SpeechSynthesisUtterance(text);
-    
-    // Always fetch the latest value from the gender selection dropdown
-    const voiceSelect = document.getElementById('voiceSelect');
     const isMale = voiceSelect.value === 'male';
-    
-    // Get all available voices from the browser's synthesis engine
     const voices = window.speechSynthesis.getVoices();
 
-    /**
-     * Logic to select the best US/UK voice based on gender
-     * Priority: 1. Edge Natural -> 2. Google US/UK -> 3. System Default
-     */
-    const getBestUSVoice = (vList) => {
-        // PRIORITY 1: Microsoft Edge "Natural" voices (Best quality)
+    const getBestVoice = (vList) => {
+        // Priority 1: Edge Natural
         let voice = vList.find(v => v.lang.includes('en-US') && v.name.includes('Natural') && 
                    (isMale ? v.name.includes('Guy') : v.name.includes('Aria')));
 
-        // PRIORITY 2: Google Chrome Voices
+        // Priority 2: Google Voices
         if (!voice) {
-            if (isMale) {
-                // For Male: Search for "Male" keyword in Google voices to fix the Chrome generic voice issue
-                voice = vList.find(v => v.name.includes('Google') && v.name.includes('Male'));
-            } else {
-                // For Female: Priority on Google US English, then any Google Female voice
-                voice = vList.find(v => v.name === "Google US English") || 
-                        vList.find(v => v.name.includes('Google') && v.name.includes('Female'));
-            }
+            voice = isMale ? vList.find(v => v.name.includes('Google') && v.name.includes('Male')) 
+                           : vList.find(v => v.name === "Google US English" || (v.name.includes('Google') && v.name.includes('Female')));
         }
 
-        // PRIORITY 3: Standard Offline System Voices (e.g., David or Zira)
+        // Priority 3: System Standard
         if (!voice) {
             voice = vList.find(v => v.lang.includes('en-US') && 
-                       (isMale ? (v.name.includes('David') || v.name.includes('Mark')) : 
-                                 (v.name.includes('Zira'))));
+                       (isMale ? (v.name.includes('David')) : (v.name.includes('Zira'))));
         }
-        
         return voice;
     };
 
-    const selectedVoice = getBestUSVoice(voices);
-    
+    const selectedVoice = getBestVoice(voices);
     if (selectedVoice) {
         utterance.voice = selectedVoice;
-        // Apply the native language code of the selected voice
-        utterance.lang = selectedVoice.lang; 
-        
-        // Debugging logs to verify settings in the browser console
-        console.log(`%c [TTS] Active Mode: ${isMale ? 'MALE' : 'FEMALE'} `, "background: #2ec4b6; color: white; font-weight: bold;");
-        console.log("Selected Voice Name: " + selectedVoice.name);
+        utterance.lang = selectedVoice.lang;
     }
 
-    // Adjust rate for better clarity (1.0 is normal, 0.9 is slightly slower)
     utterance.rate = 0.9;
     window.speechSynthesis.speak(utterance);
 }
 
+/**
+ * Initialize Deck UI
+ */
 function createDeck() {
     leftSlot.innerHTML = '';
-    const isShuffle = document.getElementById('shuffleTick').checked;
     let deckData = [...questions];
-    if (isShuffle) deckData.sort(() => Math.random() - 0.5);
+    if (shuffleTick.checked) deckData.sort(() => Math.random() - 0.5);
 
     deckData.forEach((q, index) => {
         const card = document.createElement('div');
         card.className = 'card';
         card.style.zIndex = deckData.length - index;
-        // Remove the hardcoded translateX and rely on CSS for positioning when flipped/dealt
         
         card.innerHTML = `
             <div class="card-face card-front">Deck</div>
             <div class="card-face card-back">
                 <div class="avatar-box" style="font-size: 80px; margin-bottom: 10px;">
-                    ${document.getElementById('voiceSelect').value === 'male' ? '👨' : '👩'}
+                    ${voiceSelect.value === 'male' ? '👨' : '👩'}
                 </div>
                 <div class="q-text">${q}</div>
             </div>
@@ -105,77 +102,171 @@ function createDeck() {
     });
 }
 
-// --- Global variables update ---
-let isPaused = false;
-
+/**
+ * Start/Reset the Game Settings
+ */
 function initGame() {
     clearInterval(timerInterval);
     isPaused = false;
+    history = [];
 
-    const modeSelect = document.getElementById('timerMode');
-    const inputTime = document.getElementById('inputTime');
-    const timerContainer = document.getElementById('timerContainer');
-    const btnPause = document.getElementById('btnPause');
-    const shuffleTick = document.getElementById('shuffleTick');
-    const voiceSelect = document.getElementById('voiceSelect');
-    const showTextTick = document.getElementById('showTextTick');
+    // Load persisted settings
+    if (localStorage.getItem('lastVoice')) voiceSelect.value = localStorage.getItem('lastVoice');
+    if (localStorage.getItem('lastShuffle')) shuffleTick.checked = localStorage.getItem('lastShuffle') === 'true';
+    if (localStorage.getItem('lastShowText')) showTextTick.checked = localStorage.getItem('lastShowText') === 'true';
+    if (localStorage.getItem('lastTimerMode')) timerMode.value = localStorage.getItem('lastTimerMode');
+    if (localStorage.getItem('lastTimerValue')) inputTime.value = localStorage.getItem('lastTimerValue');
 
-    // --- LOAD SAVED SETTINGS ---
-    // Load Voice
-    const savedVoice = localStorage.getItem('lastVoice');
-    if (savedVoice) voiceSelect.value = savedVoice;
-
-    // Load Shuffle status
-    const savedShuffle = localStorage.getItem('lastShuffle');
-    if (savedShuffle !== null) shuffleTick.checked = (savedShuffle === 'true');
-
-    // Load Show Text status
-    const savedShowText = localStorage.getItem('lastShowText');
-    if (savedShowText !== null) showTextTick.checked = (savedShowText === 'true');
-
-    // Load Timer Mode
-    const savedTimerMode = localStorage.getItem('lastTimerMode');
-    if (savedTimerMode) modeSelect.value = savedTimerMode;
-
-    // Load Timer Value (Default to 5 if empty)
-    const savedTime = localStorage.getItem('lastTimerValue');
-    if (savedTime) inputTime.value = savedTime;
-
-    const mode = modeSelect.value;
+    const mode = timerMode.value;
     shuffleTick.disabled = false;
 
-    // UI visibility logic
+    // UI Toggle Logic
     if (mode === 'none') {
         inputTime.classList.add('time-input-hidden');
         timerContainer.classList.add('hidden');
         btnPause.classList.add('hidden');
     } else {
-        if (mode === 'up') inputTime.classList.add('time-input-hidden');
-        else inputTime.classList.remove('time-input-hidden');
-        
+        mode === 'up' ? inputTime.classList.add('time-input-hidden') : inputTime.classList.remove('time-input-hidden');
         timerContainer.classList.remove('hidden');
         btnPause.classList.remove('hidden');
         btnPause.innerText = "Pause (Ctrl)";
         btnPause.classList.remove('paused');
     }
 
-    const inputVal = parseInt(inputTime.value) || 5;
-    seconds = (mode === 'down') ? inputVal : 0;
-    
-    document.getElementById('timerDisplay').style.color = '#d63384';
+    seconds = (mode === 'down') ? (parseInt(inputTime.value) || 5) : 0;
+    timerDisplay.style.color = '#d63384';
     updateTimerDisplay();
-
-    history = [];
-    if (countDisplay) countDisplay.innerText = "0";
+    countDisplay.innerText = "0";
     createDeck();
 }
 
-function togglePause() {
-    const mode = document.getElementById('timerMode').value;
-    if (mode === 'none' || history.length === 0) return;
+/**
+ * Deal a card from the deck
+ */
+function dealCard() {
+    if (isPaused) return;
+    
+    const isMobile = window.innerWidth <= 768;
+    const cardsToDeal = leftSlot.querySelectorAll('.card:not(.is-dealt)');
+    
+    if (cardsToDeal.length === 0) return;
 
+    // Hide previously dealt card on mobile to save space
+    const currentVisible = leftSlot.querySelectorAll('.card.is-dealt:not(.is-hidden-mobile)');
+    currentVisible.forEach(c => c.classList.add('is-hidden-mobile'));
+
+    shuffleTick.disabled = true;
+    const currentCard = cardsToDeal[0];
+
+    // Card Animation Logic
+    if (isMobile) {
+        currentCard.classList.add('is-moving-right');
+        setTimeout(() => {
+            currentCard.classList.remove('is-moving-right');
+            currentCard.classList.add('is-dealt');
+            currentCard.style.zIndex = 100 + history.length;
+        }, 150);
+    } else {
+        currentCard.classList.add('is-dealt');
+        currentCard.style.zIndex = 100 + history.length;
+    }
+
+    // Toggle Text/Avatar Visibility
+    const qText = currentCard.querySelector('.q-text');
+    const isShowText = showTextTick.checked;
+    qText.style.display = isShowText ? 'block' : 'none';
+    currentCard.querySelector('.avatar-box').style.display = isShowText ? 'none' : 'block';
+
+    history.push(currentCard);
+    countDisplay.innerText = history.length;
+
+    // Trigger Speech
+    setTimeout(() => {
+        speak(qText.innerText);
+    }, isMobile ? 400 : 200);
+
+    // Reset Timer for next card
+    if (timerMode.value === 'down') {
+        seconds = parseInt(inputTime.value) || 5;
+        updateTimerDisplay();
+    }
+    startTimer();
+}
+
+function undoCard() {
+    if (history.length === 0) return;
+    
+    const isMobile = window.innerWidth <= 768;
+    const currentCard = history.pop();
+
+    if (isMobile) {
+       
+        currentCard.classList.remove('is-dealt');
+        currentCard.classList.add('is-undoing'); 
+        
+       
+        void currentCard.offsetWidth; 
+
+        currentCard.classList.remove('is-undoing');
+        currentCard.classList.add('is-returning'); // Chạy animation bay về
+
+        setTimeout(() => {
+            currentCard.classList.remove('is-returning', 'is-hidden-mobile');
+            currentCard.style.zIndex = questions.length - history.length;
+            
+            currentCard.querySelector('.card-front').style.visibility = 'visible';
+        }, 300);
+    } else {
+        
+        currentCard.classList.remove('is-dealt');
+        currentCard.querySelector('.card-front').style.visibility = 'visible';
+        currentCard.style.zIndex = questions.length - history.length;
+    }
+
+    if (history.length > 0) {
+        const previousCard = history[history.length - 1];
+        previousCard.classList.remove('is-hidden-mobile');
+        setTimeout(() => speak(previousCard.querySelector('.q-text').innerText), 50);
+    }
+    
+    countDisplay.innerText = history.length;
+    if (timerMode.value === 'down') {
+        seconds = parseInt(inputTime.value) || 5;
+        updateTimerDisplay();
+    }
+}
+
+function updateTimerDisplay() {
+    const abs = Math.abs(seconds);
+    const m = Math.floor(abs / 60).toString().padStart(2, '0');
+    const s = (abs % 60).toString().padStart(2, '0');
+    timerDisplay.innerText = `${m}:${s}`;
+    if (seconds > 0 || timerMode.value === 'up') timerDisplay.style.color = '#d63384';
+}
+
+function startTimer() {
+    if (timerMode.value === 'none') return;
+    clearInterval(timerInterval);
+
+    timerInterval = setInterval(() => {
+        if (timerMode.value === 'up') {
+            seconds++;
+        } else {
+            seconds--;
+            if (seconds <= 0) {
+                clearInterval(timerInterval);
+                seconds = 0;
+                timerDisplay.style.color = 'red';
+                dealCard(); 
+            }
+        }
+        updateTimerDisplay();
+    }, 1000);
+}
+
+function togglePause() {
+    if (timerMode.value === 'none' || history.length === 0) return;
     isPaused = !isPaused;
-    const btnPause = document.getElementById('btnPause');
 
     if (isPaused) {
         clearInterval(timerInterval);
@@ -188,129 +279,35 @@ function togglePause() {
     }
 }
 
-function dealCard() {
-    const cards = leftSlot.querySelectorAll('.card:not(.is-dealt)');
-    if (cards.length === 0 || isPaused) return;
-
-    document.getElementById('shuffleTick').disabled = true;
-
-    const currentCard = cards[0];
-    const qText = currentCard.querySelector('.q-text');
-    const isShowText = document.getElementById('showTextTick').checked;
-
-    qText.style.display = isShowText ? 'block' : 'none';
-    currentCard.querySelector('.avatar-box').style.display = isShowText ? 'none' : 'block';
-
-    currentCard.classList.add('is-dealt');
-    currentCard.style.zIndex = 100 + history.length;
-
-    history.push(currentCard);
-    countDisplay.innerText = history.length;
-    speak(qText.innerText);
-
-    // FIX: Reset countdown timer for each card based on CURRENT input value
-    if (document.getElementById('timerMode').value === 'down') {
-        const inputTime = document.getElementById('inputTime');
-        seconds = parseInt(inputTime.value) || 5; 
-        updateTimerDisplay();
-        document.getElementById('timerDisplay').style.color = '#d63384';
-    }
-    
-    startTimer();
-}
-
-function undoCard() {
-    if (history.length === 0) return;
-    const lastCard = history.pop();
-    lastCard.classList.remove('is-dealt');
-    // return lastCard to its original position by resetting transform
-    lastCard.style.zIndex = 50 - history.length;
-    
-    countDisplay.innerText = history.length;
-}
-
-function updateTimerDisplay() {
-    const abs = Math.abs(seconds);
-    const m = Math.floor(abs / 60).toString().padStart(2, '0');
-    const s = (abs % 60).toString().padStart(2, '0');
-    timerDisplay.innerText = `${m}:${s}`;
-}
-
-function startTimer() {
-    const modeSelect = document.getElementById('timerMode');
-    const mode = modeSelect.value;
-    if (mode === 'none') return;
-
-    clearInterval(timerInterval);
-
-    timerInterval = setInterval(() => {
-        if (mode === 'up') {
-            seconds++;
-        } else {
-            seconds--;
-            if (seconds <= 0) {
-                clearInterval(timerInterval);
-                seconds = 0;
-                document.getElementById('timerDisplay').style.color = 'red';
-                
-                // AUTO DEAL: Tự động lật bài mới khi hết giờ Count Down
-                dealCard(); 
-            }
-        }
-        updateTimerDisplay();
-    }, 1000);
-}
-
-// Log all available voices for debugging and selection purposes
-window.speechSynthesis.onvoiceschanged = () => {
-    const allVoices = window.speechSynthesis.getVoices();
-    console.log("%c --- ALL AVAILABLE VOICES --- ", "background: #ff9f1c; color: white; font-weight: bold;");
-    allVoices.forEach((voice, index) => {
-        if (voice.lang.includes('en')) { 
-            console.log(`${index}. ${voice.name} (${voice.lang})`);
-        }
-    });
-};
-
-// Gán sự kiện cho các nút bấm
-document.getElementById('btnDeal').onclick = dealCard;
-document.getElementById('btnReset').onclick = initGame;
-document.getElementById('btnUndo').onclick = undoCard;
-document.getElementById('btnPause').onclick = togglePause;
+// --- Event Listeners ---
+leftSlot.onclick = () => { if (!isPaused) dealCard(); };
+btnDeal.onclick = dealCard;
+btnReset.onclick = initGame;
+btnUndo.onclick = undoCard;
+btnPause.onclick = togglePause;
 
 window.addEventListener('keydown', (e) => { 
-    // Space to Deal
-    if (e.code === 'Space') { 
-        e.preventDefault(); 
-        if (!isPaused) dealCard(); 
-    }
-    // Ctrl to Toggle Pause (handles both Left and Right Ctrl)
-    if (e.key === 'Control') {
-        e.preventDefault();
-        togglePause();
-    }
-});
-
-document.getElementById('inputTime').addEventListener('input', function() {
-    if (this.value && this.value > 0) {
-        localStorage.setItem('lastTimerValue', this.value);
-        this.dataset.manualChanged = "true";
-    }
+    if (e.code === 'Space') { e.preventDefault(); dealCard(); }
+    if (e.key === 'Control') { e.preventDefault(); togglePause(); }
 });
 
 const syncSettings = () => {
-    localStorage.setItem('lastTimerMode', document.getElementById('timerMode').value);
-    localStorage.setItem('lastVoice', document.getElementById('voiceSelect').value);
-    localStorage.setItem('lastShuffle', document.getElementById('shuffleTick').checked);
-    localStorage.setItem('lastShowText', document.getElementById('showTextTick').checked);
+    localStorage.setItem('lastTimerMode', timerMode.value);
+    localStorage.setItem('lastVoice', voiceSelect.value);
+    localStorage.setItem('lastShuffle', shuffleTick.checked);
+    localStorage.setItem('lastShowText', showTextTick.checked);
+    localStorage.setItem('lastTimerValue', inputTime.value);
 };
 
-['timerMode', 'voiceSelect', 'shuffleTick', 'showTextTick'].forEach(id => {
-    document.getElementById(id).addEventListener('change', () => {
+[timerMode, voiceSelect, shuffleTick, showTextTick, inputTime].forEach(el => {
+    el.addEventListener('change', () => {
         syncSettings();
-        if (id === 'timerMode') initGame(); // Reset game immediately when timer mode changes
+        if (el.id === 'timerMode') initGame();
     });
 });
 
+// Force voice loading for some browsers
+window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+
+// Boot
 initGame();
-document.getElementById('timerMode').addEventListener('change', initGame);

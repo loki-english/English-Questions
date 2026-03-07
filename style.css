@@ -70,45 +70,27 @@ body {
     flex: 1; position: relative; 
     display: flex; justify-content: center; align-items: center; 
 }
-.card.is-dealt {
+/* .card.is-dealt {
+    opacity: 1 !important;
+    visibility: visible !important;
     transform: translateX(370px) rotateY(180deg) !important;
 }
 
-
-
-/* .game-area {
-    display: flex;
-    justify-content: space-around; 
-    align-items: center;
-    padding: 0 40px; 
-}
-.slot {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-}
-.card.is-flipped, .card.is-dealt {
-   
-    transform: translateX(100%) rotateY(180deg) !important;
-} */
-
-/* Thẻ bài - Thẳng thắn và mềm mại */
 .card {
     width: 200px; height: 280px; position: absolute;
-    transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     transform-style: preserve-3d;
 }
 
-
-
 .card-face {
-    position: absolute; width: 100%; height: 100%;
-    backface-visibility: hidden; border-radius: 20px;
+    position: absolute; 
+    width: 100%; height: 100%;
+    backface-visibility: hidden; 
+    -webkit-backface-visibility: hidden;
+    border-radius: 20px;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
     padding: 25px; box-sizing: border-box;
-    /* box-shadow: var(--card-shadow); */
+  
 }
 
 .card-front { 
@@ -119,7 +101,84 @@ body {
 .card-back { 
     background: white; transform: rotateY(180deg); 
     color: #333; font-size: 1.5rem; font-weight: 600;
+} */
+/* --- Sửa lỗi ngược chữ Desk triệt để --- */
+
+/* .card {
+    width: 200px;
+    height: 280px;
+    position: absolute;
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-style: preserve-3d;
+    perspective: 1000px; 
 }
+
+.card-face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden !important;
+    -webkit-backface-visibility: hidden !important;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 25px;
+    box-sizing: border-box;
+}
+
+.card-front { 
+    background: var(--primary); 
+    color: white; 
+    font-size: 1.4rem; 
+    font-weight: bold;
+    z-index: 2;
+}
+
+.card-back { 
+    background: white; 
+    transform: rotateY(180deg); 
+    color: #333; 
+    font-size: 1.5rem; 
+    font-weight: 600;
+    z-index: 1;
+}
+
+.card.is-dealt .card-back {
+    z-index: 2;
+}
+.card.is-dealt .card-front {
+    z-index: 1;
+} */
+
+.card {
+    width: 200px; height: 280px; position: absolute;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-style: preserve-3d;
+    perspective: 1000px;
+}
+
+.card-face {
+    position: absolute; width: 100%; height: 100%;
+    backface-visibility: hidden !important;
+    -webkit-backface-visibility: hidden !important;
+    border-radius: 20px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 25px; box-sizing: border-box;
+}
+
+.card-front { background: var(--primary); color: white; z-index: 2; }
+.card-back { background: white; transform: rotateY(180deg); color: #333; z-index: 1; }
+
+/* PC: Bài bay sang phải */
+.card.is-dealt {
+    transform: translateX(370px) rotateY(180deg) !important;
+    z-index: 500 !important;
+}
+
+/* Ẩn mặt Deck khi đã lật để không bị ngược/xuyên thấu */
+.card.is-dealt .card-front { visibility: hidden; }
 
 /* Footer & Buttons */
 .footer-info { display: flex; justify-content: space-between; align-items: center; }
@@ -132,6 +191,16 @@ body {
 
 #btnPause.paused {
     background-color: #2ec4b6; /* Color change when in resumed state */
+}
+
+#leftSlot {
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent; /* Remove blue highlight on mobile tap */
+}
+
+/* Optional: Slight scale effect when clicking the deck */
+#leftSlot:active .card:not(.is-dealt) {
+    transform: scale(0.98);
 }
 
 /* Gray out Shuffle when disabled */
@@ -154,3 +223,132 @@ label:has(input[disabled]) {
 }
 
 .status { font-weight: bold; color: #7f8c8d; font-size: 1.1rem; }
+
+/* --- Mobile Optimization --- */
+@media (max-width: 768px) {
+    .top-controls {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+    }
+
+    .settings-left {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    /* Rút ngắn độ rộng của các ô chọn để hiện rõ text */
+    .control-box {
+        justify-content: space-between;
+        padding: 8px 12px;
+    }
+
+    .control-box select {
+        max-width: 120px; /* Thu hẹp chiều rộng select */
+        font-size: 0.9rem;
+    }
+
+    #inputTime {
+        width: 40px; /* Thu hẹp ô nhập số giây */
+    }
+
+    .settings-right {
+        align-items: center; /* Căn giữa shuffle/show text trên mobile */
+        flex-direction: row;
+        justify-content: space-around;
+        background: var(--bg-soft);
+        padding: 10px;
+        border-radius: 15px;
+    }
+
+    .timer-wrapper {
+        margin: 5px auto;
+        font-size: 1rem;
+    }
+    .game-area {
+        justify-content: center;
+    }
+    .slot:last-child { display: none; }
+
+   .card {
+        width: 190px; height: 270px;
+        transition: transform 0.3s ease-in-out, opacity 0.2s;
+        transform-style: preserve-3d;
+    }
+
+    /* Khi Deal: Bước 1 - Nhích sang phải và bắt đầu lật nghiêng */
+    .card.is-moving-right {
+        transform: translateX(60px) rotateY(90deg) !important;
+    }
+
+   /* Khi Deal: Bước 2 - Quay về giữa và hoàn tất lật 180 độ */
+    .card.is-dealt {
+        transform: translateX(0) rotateY(180deg) !important;
+        z-index: 500 !important;
+        opacity: 1 !important;
+    }
+
+    /* Khi Undo: Bước 1 - Bài hiện ra ở bên phải và đang ở mặt sau */
+    .card.is-undoing {
+        transition: none !important; /* Reset ngay lập tức để đặt vị trí */
+        transform: translateX(60px) rotateY(180deg) !important;
+        opacity: 0;
+    }
+
+    /* Khi Undo: Bước 2 - Bay về bộ bài và lật lại mặt trước (Deck) */
+    .card.is-returning {
+        transition: transform 0.3s ease-in-out, opacity 0.2s !important;
+        transform: translateX(0) rotateY(0deg) !important;
+        opacity: 1;
+    }
+
+    /* Animation for Undo: Card moves slightly right then flies back to the deck on the left */
+    .card.is-moving-left {
+        transform: translateX(60px) rotateY(90deg) !important;
+        opacity: 0.5;
+        transition: transform 0.2s ease-in, opacity 0.2s;
+    }
+    .card.is-hidden-mobile { opacity: 0 !important; visibility: hidden; }
+    
+    /* Ensure text is not mirrored */
+    .card-back {
+        backface-visibility: hidden;
+    }
+
+    .footer-info {
+        flex-direction: column;
+        align-items: flex-start !important;
+        padding-left: 15px;
+    }
+
+   .button-group {
+        display: flex;
+        flex-direction: column; 
+        align-items: flex-start !important;
+        width: 100%; 
+        gap: 8px;
+        margin-left: 0;
+        padding-left: 0;
+    }
+    
+    #btnDeal, #btnPause, #btnUndo, #btnReset {
+        width: 92% !important; 
+        text-align: left;
+        margin-left: 0 !important;
+        padding: 12px 15px;
+        box-sizing: border-box;
+    }
+
+    #btnDeal { order: 1; }
+    #btnPause { order: 2; }
+    #btnUndo { order: 3; }
+    #btnReset { order: 4; }
+
+
+    .status {
+        order: -1; 
+        margin-bottom: 10px;
+        color: #7f8c8d;
+    }
+}
