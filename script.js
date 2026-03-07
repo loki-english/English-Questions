@@ -45,7 +45,8 @@ const currentVoiceNameDisplay = document.getElementById('currentVoiceName');
  * Speech Synthesis Logic
  */
 function speak(text) {
-    window.speechSynthesis.cancel();
+    if (window.innerWidth > 768) window.speechSynthesis.cancel();
+    
     const utterance = new SpeechSynthesisUtterance(text);
     const voices = window.speechSynthesis.getVoices();
 
@@ -168,6 +169,11 @@ function createDeck() {
  * Start/Reset Game Settings
  */
 function initGame() {
+    document.body.addEventListener('touchstart', () => {
+    const v = new SpeechSynthesisUtterance("");
+    window.speechSynthesis.speak(v);
+    }, { once: true });
+
     clearInterval(timerInterval);
     isPaused = false;
     history = [];
