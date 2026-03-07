@@ -54,11 +54,21 @@ function speak(text) {
             voice = isMale ? vList.find(v => v.name.includes('Google') && v.name.includes('Male')) 
                            : vList.find(v => v.name === "Google US English" || (v.name.includes('Google') && v.name.includes('Female')));
         }
+        
+        if (!voice) {
+        voice = vList.find(v => v.lang.includes('en-US') && 
+                   v.name.toLowerCase().includes(isMale ? 'male' : 'female'));
+        }
 
         if (!voice) {
             voice = vList.find(v => v.lang.includes('en-US') && 
                        (isMale ? (v.name.includes('David')) : (v.name.includes('Zira'))));
         }
+
+        if (!voice) {
+        voice = vList.find(v => v.lang.includes('en-US'));
+        }
+        
         return voice;
     };
 
