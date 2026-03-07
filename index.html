@@ -26,13 +26,17 @@
                         <option value="up">Count Up</option>
                         <option value="down">Count Down</option>
                     </select>
-                    <input type="number" id="inputTime" value="30"><span>s</span>
+                    <input type="number" id="inputTime" value="5"><span>s</span>
                 </div>
             </div>
 
             <div class="settings-right">
                 <label><input type="checkbox" id="shuffleTick"> Shuffle</label>
                 <label><input type="checkbox" id="showTextTick" checked> Show Text</label>
+
+                <div id="timerContainer" class="timer-wrapper hidden">
+                <span id="timerDisplay">00:00</span>
+                </div>
             </div>
         </div>
 
@@ -52,6 +56,7 @@
             <div class="button-group">
                 <button id="btnReset" class="btn">Reset Deck</button>
                 <button id="btnUndo" class="btn">Undo</button>
+                <button id="btnPause" class="btn hidden">Pause (Ctrl)</button>
                 <button id="btnDeal" class="btn-primary">Deal (Space)</button>
             </div>
             <p class="status">Progress: <span id="countDisplay">0</span>/50</p>

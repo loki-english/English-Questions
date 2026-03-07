@@ -31,17 +31,27 @@ body {
 }
 
 .timer-wrapper {
-    position: absolute;
-    right: 140px; /* Căn lề phải cùng cột với Shuffle */
-    top: 720px;  /* Nằm ngay phía dưới hàng Shuffle/Show Text */
+    /* Loại bỏ absolute để nó đi theo luồng văn bản */
     background: #fff0f6;
-    padding: 8px 15px;
+    padding: 5px 15px;
     border-radius: 12px;
     font-weight: bold;
     color: #d63384;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-    z-index: 5;
+    display: inline-block;
+    margin-top: 5px; 
+}
+
+.settings-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; /* Căn lề phải */
+    gap: 5px;
+}
+
+.count-up-input-hidden {
+    display: none !important;
 }
 
 .time-input-hidden {
@@ -50,17 +60,39 @@ body {
 
 .hidden { display: none; }
 
-/* Game Area - Căn đều giữa */
+
 .game-area {
     display: flex; height: 350px; background: var(--bg-soft);
     border-radius: 25px; position: relative; margin-bottom: 30px;
     padding: 20px 20px;
 }
-
 .slot { 
     flex: 1; position: relative; 
     display: flex; justify-content: center; align-items: center; 
 }
+.card.is-dealt {
+    transform: translateX(370px) rotateY(180deg) !important;
+}
+
+
+
+/* .game-area {
+    display: flex;
+    justify-content: space-around; 
+    align-items: center;
+    padding: 0 40px; 
+}
+.slot {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+.card.is-flipped, .card.is-dealt {
+   
+    transform: translateX(100%) rotateY(180deg) !important;
+} */
 
 /* Thẻ bài - Thẳng thắn và mềm mại */
 .card {
@@ -69,10 +101,7 @@ body {
     transform-style: preserve-3d;
 }
 
-/* Khi rút bài: Chỉ dịch chuyển và lật, không xoay nghiêng */
-.card.is-dealt {
-    transform: translateX(330px) rotateY(180deg) !important; /* Đã bỏ rotate(5deg) */
-}
+
 
 .card-face {
     position: absolute; width: 100%; height: 100%;
@@ -94,6 +123,24 @@ body {
 
 /* Footer & Buttons */
 .footer-info { display: flex; justify-content: space-between; align-items: center; }
+
+/* Styling for Pause button */
+#btnPause {
+    background-color: #ff9f1c;
+    color: white;
+}
+
+#btnPause.paused {
+    background-color: #2ec4b6; /* Color change when in resumed state */
+}
+
+/* Gray out Shuffle when disabled */
+input[disabled] + span, 
+label:has(input[disabled]) {
+    color: #bdc3c7;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
 
 .btn { 
     padding: 12px 25px; border-radius: 12px; border: none; 
