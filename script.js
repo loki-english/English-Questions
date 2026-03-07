@@ -39,6 +39,8 @@ const btnPause = document.getElementById('btnPause');
 const btnReset = document.getElementById('btnReset');
 const btnUndo = document.getElementById('btnUndo');
 const btnDeal = document.getElementById('btnDeal');
+const voiceTrigger = document.getElementById('voiceTrigger');
+const currentVoiceNameDisplay = document.getElementById('currentVoiceName');
 
 /**
  * Speech Synthesis Logic
@@ -78,6 +80,22 @@ function speak(text) {
 
     utterance.rate = 0.9;
     window.speechSynthesis.speak(utterance);
+}
+
+function getShortName(name) {
+    if (!name) return "Default";
+    if (name.includes('Aria')) return "Aria (F)";
+    if (name.includes('Guy')) return "Guy (M)";
+    if (name.includes('Jenny')) return "Jenny (F)";
+    return name.split(' ').slice(0, 2).join(' '); // Lấy 2 từ đầu cho ngắn
+}
+
+function updateVoiceDisplay() {
+    if (selectedSystemVoice && priorityVoiceTick.checked) {
+        currentVoiceNameDisplay.innerText = getShortName(selectedSystemVoice);
+    } else {
+        currentVoiceNameDisplay.innerText = "System Default";
+    }
 }
 
 /**
@@ -335,6 +353,7 @@ function showDebugVoices() {
             priorityVoiceTick.checked = true;
             localStorage.setItem('selectedSystemVoice', voice.name);
             localStorage.setItem('priorityVoice', 'true');
+            updateVoiceDisplay();
             showDebugVoices(); 
         };
 
@@ -396,6 +415,10 @@ const syncSettings = () => {
     });
 });
 
+voiceTrigger.onclick = () => {
+    showDebugVoices();
+};
+
 voiceSelect.addEventListener('change', () => {
     // Reset lựa chọn trong bảng
     selectedSystemVoice = null;
@@ -418,3 +441,4 @@ priorityVoiceTick.addEventListener('change', () => {
 window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
 
 initGame();
+updateVoiceDisplay();
