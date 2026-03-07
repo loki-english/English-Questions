@@ -1,6 +1,6 @@
 /**
  * ENGLISH FLASHCARDS PRO - LOGIC SCRIPT
- * Cleaned and Optimized Version
+ * Optimized for PC/Mobile distinction
  */
 
 const questions = [
@@ -39,7 +39,6 @@ const btnDeal = document.getElementById('btnDeal');
 
 /**
  * Speech Synthesis Logic
- * @param {string} text - The question text to speak
  */
 function speak(text) {
     window.speechSynthesis.cancel();
@@ -48,17 +47,14 @@ function speak(text) {
     const voices = window.speechSynthesis.getVoices();
 
     const getBestVoice = (vList) => {
-        // Priority 1: Edge Natural
         let voice = vList.find(v => v.lang.includes('en-US') && v.name.includes('Natural') && 
                    (isMale ? v.name.includes('Guy') : v.name.includes('Aria')));
 
-        // Priority 2: Google Voices
         if (!voice) {
             voice = isMale ? vList.find(v => v.name.includes('Google') && v.name.includes('Male')) 
                            : vList.find(v => v.name === "Google US English" || (v.name.includes('Google') && v.name.includes('Female')));
         }
 
-        // Priority 3: System Standard
         if (!voice) {
             voice = vList.find(v => v.lang.includes('en-US') && 
                        (isMale ? (v.name.includes('David')) : (v.name.includes('Zira'))));
@@ -98,29 +94,37 @@ function createDeck() {
                 <div class="q-text">${q}</div>
             </div>
         `;
+
+        // Handle clicks on cards
+        card.onclick = (e) => {
+            e.stopPropagation();
+            const isPC = window.innerWidth > 768;
+            
+            // Only allow Undo-on-click if it is a dealt card AND the device is a PC
+            if (card.classList.contains('is-dealt') && isPC) {
+                undoCard();
+            } else {
+                // On mobile or if card is in deck, clicking deals a new card
+                if (!isPaused) dealCard();
+            }
+        };
+
         leftSlot.appendChild(card);
     });
 }
 
 /**
- * Start/Reset the Game Settings
+ * Start/Reset Game Settings
  */
 function initGame() {
     clearInterval(timerInterval);
     isPaused = false;
     history = [];
 
-    // Load persisted settings
-    if (localStorage.getItem('lastVoice')) voiceSelect.value = localStorage.getItem('lastVoice');
-    if (localStorage.getItem('lastShuffle')) shuffleTick.checked = localStorage.getItem('lastShuffle') === 'true';
-    if (localStorage.getItem('lastShowText')) showTextTick.checked = localStorage.getItem('lastShowText') === 'true';
-    if (localStorage.getItem('lastTimerMode')) timerMode.value = localStorage.getItem('lastTimerMode');
-    if (localStorage.getItem('lastTimerValue')) inputTime.value = localStorage.getItem('lastTimerValue');
-
+    // Sync settings with UI
     const mode = timerMode.value;
     shuffleTick.disabled = false;
 
-    // UI Toggle Logic
     if (mode === 'none') {
         inputTime.classList.add('time-input-hidden');
         timerContainer.classList.add('hidden');
@@ -151,14 +155,12 @@ function dealCard() {
     
     if (cardsToDeal.length === 0) return;
 
-    // Hide previously dealt card on mobile to save space
     const currentVisible = leftSlot.querySelectorAll('.card.is-dealt:not(.is-hidden-mobile)');
     currentVisible.forEach(c => c.classList.add('is-hidden-mobile'));
 
     shuffleTick.disabled = true;
     const currentCard = cardsToDeal[0];
 
-    // Card Animation Logic
     if (isMobile) {
         currentCard.classList.add('is-moving-right');
         setTimeout(() => {
@@ -171,7 +173,6 @@ function dealCard() {
         currentCard.style.zIndex = 100 + history.length;
     }
 
-    // Toggle Text/Avatar Visibility
     const qText = currentCard.querySelector('.q-text');
     const isShowText = showTextTick.checked;
     qText.style.display = isShowText ? 'block' : 'none';
@@ -180,12 +181,10 @@ function dealCard() {
     history.push(currentCard);
     countDisplay.innerText = history.length;
 
-    // Trigger Speech
     setTimeout(() => {
         speak(qText.innerText);
     }, isMobile ? 400 : 200);
 
-    // Reset Timer for next card
     if (timerMode.value === 'down') {
         seconds = parseInt(inputTime.value) || 5;
         updateTimerDisplay();
@@ -193,6 +192,9 @@ function dealCard() {
     startTimer();
 }
 
+/**
+ * Undo Logic
+ */
 function undoCard() {
     if (history.length === 0) return;
     
@@ -200,24 +202,18 @@ function undoCard() {
     const currentCard = history.pop();
 
     if (isMobile) {
-       
         currentCard.classList.remove('is-dealt');
         currentCard.classList.add('is-undoing'); 
-        
-       
         void currentCard.offsetWidth; 
-
         currentCard.classList.remove('is-undoing');
-        currentCard.classList.add('is-returning'); // Chạy animation bay về
+        currentCard.classList.add('is-returning'); 
 
         setTimeout(() => {
             currentCard.classList.remove('is-returning', 'is-hidden-mobile');
             currentCard.style.zIndex = questions.length - history.length;
-            
             currentCard.querySelector('.card-front').style.visibility = 'visible';
         }, 300);
     } else {
-        
         currentCard.classList.remove('is-dealt');
         currentCard.querySelector('.card-front').style.visibility = 'visible';
         currentCard.style.zIndex = questions.length - history.length;
@@ -280,15 +276,20 @@ function togglePause() {
 }
 
 // --- Event Listeners ---
-leftSlot.onclick = () => { if (!isPaused) dealCard(); };
+leftSlot.onclick = (e) => { 
+    if (e.target === leftSlot && !isPaused) dealCard(); 
+};
+
 btnDeal.onclick = dealCard;
 btnReset.onclick = initGame;
 btnUndo.onclick = undoCard;
 btnPause.onclick = togglePause;
 
+// Keyboard Shortcuts
 window.addEventListener('keydown', (e) => { 
     if (e.code === 'Space') { e.preventDefault(); dealCard(); }
     if (e.key === 'Control') { e.preventDefault(); togglePause(); }
+    if (e.key === 'Alt') { e.preventDefault(); undoCard(); }
 });
 
 const syncSettings = () => {
@@ -306,8 +307,6 @@ const syncSettings = () => {
     });
 });
 
-// Force voice loading for some browsers
 window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
 
-// Boot
 initGame();
