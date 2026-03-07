@@ -22,10 +22,23 @@ const timerContainer = document.getElementById('timerContainer');
 function speak(text) {
     window.speechSynthesis.cancel();
     const utterance = new SpeechSynthesisUtterance(text);
-    const isMale = document.getElementById('voiceSelect').value === 'male';
     const voices = window.speechSynthesis.getVoices();
-    utterance.voice = voices.find(v => v.lang.includes('en') && (isMale ? v.name.includes('David') : v.name.includes('Zira'))) || voices[0];
-    utterance.rate = 0.9;
+    const isMale = document.getElementById('voiceSelect').value === 'male';
+    
+    // Tìm kiếm giọng đọc "Natural" hoặc "Google" để có chất lượng tốt nhất
+    let selectedVoice = voices.find(v => v.name.includes('Natural') && v.lang.includes('en'));
+    if (!selectedVoice) {
+        selectedVoice = voices.find(v => v.name.includes('Google') && v.lang.includes('en'));
+    }
+    
+    // Nếu không thấy, mới quay lại chọn theo giới tính như cũ
+    if (!selectedVoice) {
+        selectedVoice = voices.find(v => v.lang.includes('en') && 
+            (isMale ? v.name.includes('David') : v.name.includes('Zira')));
+    }
+
+    utterance.voice = selectedVoice || voices[0];
+    utterance.rate = 0.9; 
     window.speechSynthesis.speak(utterance);
 }
 
@@ -55,25 +68,40 @@ function createDeck() {
 }
 
 function initGame() {
+    // 1. Dừng mọi bộ đếm đang chạy
     clearInterval(timerInterval);
-    const mode = document.getElementById('timerMode').value;
+
+    // 2. Lấy các phần tử DOM
+    const modeSelect = document.getElementById('timerMode');
+    const inputTime = document.getElementById('inputTime');
+    const timerContainer = document.getElementById('timerContainer');
+    const timerDisplay = document.getElementById('timerDisplay');
+    const mode = modeSelect.value;
+
+    // 3. Xử lý Hiển thị (UI) dựa trên Timer Mode
+    if (mode === 'none') {
+        if (inputTime) inputTime.classList.add('time-input-hidden');
+        if (timerContainer) timerContainer.classList.add('hidden');
+    } else {
+        if (inputTime) inputTime.classList.remove('time-input-hidden');
+        if (timerContainer) timerContainer.classList.remove('hidden');
+    }
+
+    // 4. Thiết lập giá trị thời gian ban đầu
     const inputVal = parseInt(document.getElementById('inputTime').value) || 30;
     
-    // Đặt lại màu sắc bình thường
-    document.getElementById('timerDisplay').style.color = '#d63384';
-    
+    // Reset màu sắc timer về mặc định
+    if (timerDisplay) timerDisplay.style.color = '#d63384';
+
+    // Đặt số giây khởi đầu: nếu đếm lùi thì lấy từ input, đếm tiến thì từ 0
     seconds = (mode === 'down') ? inputVal : 0;
     updateTimerDisplay();
 
-    clearInterval(timerInterval);
-    timerContainer.className = (mode === 'none') ? 'hidden' : 'timer-wrapper';
-    
-    
-    seconds = (mode === 'down') ? (parseInt(document.getElementById('inputTime').value) || 30) : 0;
-    updateTimerDisplay();
-    
+    // 5. Reset trạng thái bài
     history = [];
-    countDisplay.innerText = "0";
+    if (countDisplay) countDisplay.innerText = "0";
+    
+    // Gọi hàm tạo lại bộ bài vật lý
     createDeck();
 }
 
@@ -138,27 +166,21 @@ function startTimer() {
     }, 1000);
 }
 
-document.getElementById('timerMode').addEventListener('change', function() {
-    const mode = this.value;
-    const inputTime = document.getElementById('inputTime');
-    const timerContainer = document.getElementById('timerContainer');
-
-    // Ẩn/Hiện ô nhập số giây
-    if (mode === 'none') {
-        inputTime.classList.add('time-input-hidden');
-        timerContainer.classList.add('hidden');
-    } else {
-        inputTime.classList.remove('time-input-hidden');
-        timerContainer.classList.remove('hidden');
-    }
-    
-    // Reset lại timer khi đổi chế độ
-    initGame(); 
-});
-// Gán sự kiện
+// Gán sự kiện cho các nút bấm
 document.getElementById('btnDeal').onclick = dealCard;
 document.getElementById('btnReset').onclick = initGame;
 document.getElementById('btnUndo').onclick = undoCard;
-window.addEventListener('keydown', (e) => { if(e.code === 'Space') { e.preventDefault(); dealCard(); }});
 
+// Xử lý phím tắt Space
+window.addEventListener('keydown', (e) => { 
+    if(e.code === 'Space') { 
+        e.preventDefault(); 
+        dealCard(); 
+    }
+});
+
+// Chạy khởi tạo lần đầu khi tải trang
 initGame();
+
+// QUAN TRỌNG: Chỉ cần dòng này để cập nhật mọi thứ khi đổi Timer Mode
+document.getElementById('timerMode').addEventListener('change', initGame);
