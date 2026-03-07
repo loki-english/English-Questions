@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Flashcards Pro</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>I-50 English Questions</h1>
+
+        <div class="top-controls">
+            <div class="settings-left">
+                <div class="control-box">
+                    <label>Voice:</label>
+                    <select id="voiceSelect">
+                        <option value="female">Female</option>
+                        <option value="male">Male</option>
+                    </select>
+                </div>
+                <div class="control-box">
+                    <label>Timer:</label>
+                    <select id="timerMode">
+                        <option value="none">None</option>
+                        <option value="up">Count Up</option>
+                        <option value="down">Count Down</option>
+                    </select>
+                    <input type="number" id="inputTime" value="30"><span>s</span>
+                </div>
+            </div>
+
+            <div class="settings-right">
+                <label><input type="checkbox" id="shuffleTick"> Shuffle</label>
+                <label><input type="checkbox" id="showTextTick" checked> Show Text</label>
+            </div>
+        </div>
+
+        <div id="timerContainer" class="timer-wrapper hidden">
+            <span id="timerDisplay">00:00</span>
+        </div>
+
+        <div class="game-area">
+            <div class="slot" id="leftSlot">
+                </div>
+            
+            <div class="slot" id="rightSlot">
+                </div>
+        </div>
+
+        <div class="footer-info">
+            <div class="button-group">
+                <button id="btnReset" class="btn">Reset Deck</button>
+                <button id="btnUndo" class="btn">Undo</button>
+                <button id="btnDeal" class="btn-primary">Deal (Space)</button>
+            </div>
+            <p class="status">Progress: <span id="countDisplay">0</span>/50</p>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

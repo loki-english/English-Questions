@@ -1,0 +1,109 @@
+:root {
+    --primary: #9eaffc;
+    --success: #2ec4b6;
+    --bg-soft: #f0f2f5;
+    --card-shadow: 0 10px 20px rgba(0,0,0,0.08);
+}
+
+body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background-color: #e9ecef;
+    display: flex; justify-content: center; align-items: center;
+    min-height: 100vh; margin: 0;
+}
+
+.container {
+    background: white; padding: 40px; border-radius: 30px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+    width: 800px; text-align: center;
+}
+
+/* Controls - Loại bỏ viền, dùng nền mềm */
+.top-controls { display: flex; justify-content: space-between; margin-bottom: 25px; }
+
+.control-box {
+    background: var(--bg-soft); padding: 10px 15px; border-radius: 15px;
+    display: flex; align-items: center; gap: 10px; margin-bottom: 8px;
+}
+
+.control-box select, .control-box input {
+    border: none; background: transparent; outline: none; font-weight: 600;
+}
+
+.timer-wrapper {
+    position: absolute;
+    right: 140px; /* Căn lề phải cùng cột với Shuffle */
+    top: 720px;  /* Nằm ngay phía dưới hàng Shuffle/Show Text */
+    background: #fff0f6;
+    padding: 8px 15px;
+    border-radius: 12px;
+    font-weight: bold;
+    color: #d63384;
+    font-size: 1.2rem;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    z-index: 5;
+}
+
+.time-input-hidden {
+    display: none !important;
+}
+
+.hidden { display: none; }
+
+/* Game Area - Căn đều giữa */
+.game-area {
+    display: flex; height: 350px; background: var(--bg-soft);
+    border-radius: 25px; position: relative; margin-bottom: 30px;
+    padding: 0 20px;
+}
+
+.slot { 
+    flex: 1; position: relative; 
+    display: flex; justify-content: center; align-items: center; 
+}
+
+/* Thẻ bài - Thẳng thắn và mềm mại */
+.card {
+    width: 200px; height: 280px; position: absolute;
+    transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transform-style: preserve-3d;
+}
+
+/* Khi rút bài: Chỉ dịch chuyển và lật, không xoay nghiêng */
+.card.is-dealt {
+    transform: translateX(330px) rotateY(180deg) !important; /* Đã bỏ rotate(5deg) */
+}
+
+.card-face {
+    position: absolute; width: 100%; height: 100%;
+    backface-visibility: hidden; border-radius: 20px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 25px; box-sizing: border-box;
+    /* box-shadow: var(--card-shadow); */
+}
+
+.card-front { 
+    background: var(--primary); color: white; 
+    font-size: 1.4rem; font-weight: bold;
+}
+
+.card-back { 
+    background: white; transform: rotateY(180deg); 
+    color: #333; font-size: 1.5rem; font-weight: 600;
+}
+
+/* Footer & Buttons */
+.footer-info { display: flex; justify-content: space-between; align-items: center; }
+
+.btn { 
+    padding: 12px 25px; border-radius: 12px; border: none; 
+    cursor: pointer; font-weight: 600; background: #e0e0e0; transition: 0.3s;
+}
+.btn:hover { background: #d0d0d0; }
+
+.btn-primary { 
+    background: var(--success); color: white; padding: 12px 40px; 
+    border-radius: 12px; border: none; font-weight: bold; cursor: pointer;
+}
+
+.status { font-weight: bold; color: #7f8c8d; font-size: 1.1rem; }
