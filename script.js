@@ -28,7 +28,6 @@ const leftSlot = document.getElementById('leftSlot');
 const countDisplay = document.getElementById('countDisplay');
 const timerDisplay = document.getElementById('timerDisplay');
 const timerContainer = document.getElementById('timerContainer');
-const voiceSelect = document.getElementById('voiceSelect');
 const timerMode = document.getElementById('timerMode');
 const inputTime = document.getElementById('inputTime');
 const shuffleTick = document.getElementById('shuffleTick');
@@ -46,36 +45,21 @@ const currentVoiceNameDisplay = document.getElementById('currentVoiceName');
  */
 function speak(text) {
     if (window.innerWidth > 768) window.speechSynthesis.cancel();
-    
+
     const utterance = new SpeechSynthesisUtterance(text);
     const voices = window.speechSynthesis.getVoices();
 
-    // Nếu tick chọn "Ưu tiên" và đã có giọng được chọn trong bảng
-    if (selectedSystemVoice) {
-        const voice = voices.find(v => v.name === selectedSystemVoice);
-        if (voice) {
-            utterance.voice = voice;
-            utterance.lang = voice.lang;
-        }
-    } else {
-        // Logic chọn giọng Male/Female mặc định của bạn
-        const isMale = voiceSelect.value === 'male';
-        const getBestVoice = (vList) => {
-            let voice = vList.find(v => v.lang.includes('en-US') && v.name.includes('Natural') && 
-                       (isMale ? v.name.includes('Guy') : v.name.includes('Aria')));
-            if (!voice) {
-                voice = isMale ? vList.find(v => v.name.includes('Google') && v.name.includes('Male')) 
-                               : vList.find(v => v.name === "Google US English" || (v.name.includes('Google') && v.name.includes('Female')));
-            }
-            if (!voice) voice = vList.find(v => v.lang.includes('en-US'));
-            return voice;
-        };
+    let targetVoice = voices.find(v => v.name === selectedSystemVoice);
 
-        const selectedVoice = getBestVoice(voices);
-        if (selectedVoice) {
-            utterance.voice = selectedVoice;
-            utterance.lang = selectedVoice.lang;
-        }
+    if (!targetVoice) {
+        targetVoice = voices.find(v => v.lang.includes('en-US') && v.name.includes('Aria')) || 
+                  voices.find(v => v.lang.includes('en-US')) ||
+                  voices[0];
+    }
+
+    if (targetVoice) {
+        utterance.voice = targetVoice;
+        utterance.lang = targetVoice.lang;
     }
 
     utterance.rate = 0.9;
@@ -91,10 +75,14 @@ function getShortName(name) {
 }
 
 function updateVoiceDisplay() {
+    const voices = window.speechSynthesis.getVoices();
+
     if (selectedSystemVoice) {
         currentVoiceNameDisplay.innerText = getShortName(selectedSystemVoice);
     } else {
-        currentVoiceNameDisplay.innerText = "System Default";
+        const defaultVoice = voices.find(v => v.lang.includes('en-US') && v.name.includes('Aria')) 
+                           || voices.find(v => v.lang.startsWith('en'));
+        currentVoiceNameDisplay.innerText = defaultVoice ? getShortName(defaultVoice.name) : "System Default";
     }
 }
 
@@ -125,9 +113,7 @@ function createDeck() {
     let deckData = [...questions];
     if (shuffleTick.checked) deckData.sort(() => Math.random() - 0.5);
 
-    const currentVoice = (selectedSystemVoice) 
-                     ? selectedSystemVoice 
-                     : (voiceSelect.value === 'male' ? 'Guy' : 'Aria');
+    const currentVoice = selectedSystemVoice;
     const genderIcon = getVoiceIcon(currentVoice);
 
 
@@ -361,21 +347,28 @@ function showDebugVoices() {
     // FILTER: Only keep voices where language starts with 'en'
     const voices = allVoices.filter(v => v.lang.toLowerCase().startsWith('en'));
 
-    const isMale = voiceSelect.value === 'male';
+    // const isMale = voiceSelect.value === 'male';
     
     // Logic to determine current active voice for Status display
-    let currentActiveVoiceName = "";
-    if (selectedSystemVoice) {
-        currentActiveVoiceName = selectedSystemVoice;
-    } else {
-        const getBest = (vList) => {
-            return vList.find(v => v.lang.includes('en-US') && v.name.includes('Natural') && (isMale ? v.name.includes('Guy') : v.name.includes('Aria'))) ||
-                   vList.find(v => v.lang.includes('en-US') && v.name.toLowerCase().includes(isMale ? 'male' : 'female')) ||
-                   vList.find(v => v.lang.includes('en-US'));
-        };
-        const best = getBest(voices); // Using filtered list
-        if (best) currentActiveVoiceName = best.name;
-    }
+    let currentActiveVoiceName = selectedSystemVoice;
+    if (!currentActiveVoiceName) {
+    const voices = allVoices.filter(v => v.lang.toLowerCase().startsWith('en'));
+    const best = voices.find(v => v.lang.includes('en-US') && v.name.includes('Aria')) || voices[0];
+    if (best) currentActiveVoiceName = best.name;
+}
+
+
+    // if (selectedSystemVoice) {
+    //     currentActiveVoiceName = selectedSystemVoice;
+    // } else {
+    //     const getBest = (vList) => {
+    //         return vList.find(v => v.lang.includes('en-US') && v.name.includes('Natural') && (isMale ? v.name.includes('Guy') : v.name.includes('Aria'))) ||
+    //                vList.find(v => v.lang.includes('en-US') && v.name.toLowerCase().includes(isMale ? 'male' : 'female')) ||
+    //                vList.find(v => v.lang.includes('en-US'));
+    //     };
+    //     const best = getBest(voices); // Using filtered list
+    //     if (best) currentActiveVoiceName = best.name;
+    // }
 
     voiceTableBody.innerHTML = ''; 
 
@@ -447,13 +440,13 @@ window.addEventListener('keydown', (e) => {
 
 const syncSettings = () => {
     localStorage.setItem('lastTimerMode', timerMode.value);
-    localStorage.setItem('lastVoice', voiceSelect.value);
+    localStorage.setItem('lastVoice', selectedSystemVoice || '');
     localStorage.setItem('lastShuffle', shuffleTick.checked);
     localStorage.setItem('lastShowText', showTextTick.checked);
     localStorage.setItem('lastTimerValue', inputTime.value);
 };
 
-[timerMode, voiceSelect, shuffleTick, showTextTick, inputTime].forEach(el => {
+[timerMode, shuffleTick, showTextTick, inputTime].forEach(el => {
     el.addEventListener('change', () => {
         syncSettings();
         if (el.id === 'timerMode') initGame();
@@ -464,20 +457,20 @@ voiceTrigger.onclick = () => {
     showDebugVoices();
 };
 
-voiceSelect.addEventListener('change', () => {
-    // Reset lựa chọn trong bảng
-    selectedSystemVoice = null;
-    // priorityVoiceTick.checked = false;
+// voiceSelect.addEventListener('change', () => {
+//     // Reset lựa chọn trong bảng
+//     selectedSystemVoice = null;
+//     // priorityVoiceTick.checked = false;
     
-    // Xóa khỏi bộ nhớ
-    localStorage.removeItem('selectedSystemVoice');
-    // localStorage.setItem('priorityVoice', 'false');
+//     // Xóa khỏi bộ nhớ
+//     localStorage.removeItem('selectedSystemVoice');
+//     // localStorage.setItem('priorityVoice', 'false');
     
-    // Nếu bảng debug đang mở thì cập nhật lại giao diện
-    if (!debugOverlay.classList.contains('hidden')) {
-        showDebugVoices();
-    }
-});
+//     // Nếu bảng debug đang mở thì cập nhật lại giao diện
+//     if (!debugOverlay.classList.contains('hidden')) {
+//         showDebugVoices();
+//     }
+// });
 
 // priorityVoiceTick.addEventListener('change', () => {
 //     localStorage.setItem('priorityVoice', priorityVoiceTick.checked);
