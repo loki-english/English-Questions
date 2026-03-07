@@ -38,12 +38,10 @@
         
         <div class="top-controls">
             <div class="settings-left">
-                <div class="control-box">
+                <div onclick="showDebugVoices()" class="control-box">
                     <label>Voice:</label>
-                    <select id="voiceSelect">
-                        <option value="female">Female</option>
-                        <option value="male">Male</option>
-                    </select>
+                    <span id="currentVoiceName">Female</span>
+                    <span id="voiceSelect" class="arrow-down"></span>
                 </div>
                 <div class="control-box">
                     <label>Timer:</label>
