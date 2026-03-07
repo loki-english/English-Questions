@@ -22,8 +22,6 @@ let timerInterval;
 let seconds = 0;
 let isPaused = false;
 let selectedSystemVoice = localStorage.getItem('selectedSystemVoice') || null;
-const priorityVoiceTick = document.getElementById('priorityVoiceTick');
-priorityVoiceTick.checked = localStorage.getItem('priorityVoice') === 'true';
 
 // --- DOM Elements ---
 const leftSlot = document.getElementById('leftSlot');
@@ -52,7 +50,7 @@ function speak(text) {
     const voices = window.speechSynthesis.getVoices();
 
     // Nếu tick chọn "Ưu tiên" và đã có giọng được chọn trong bảng
-    if (priorityVoiceTick.checked && selectedSystemVoice) {
+    if (selectedSystemVoice) {
         const voice = voices.find(v => v.name === selectedSystemVoice);
         if (voice) {
             utterance.voice = voice;
@@ -92,7 +90,7 @@ function getShortName(name) {
 }
 
 function updateVoiceDisplay() {
-    if (selectedSystemVoice && priorityVoiceTick.checked) {
+    if (selectedSystemVoice) {
         currentVoiceNameDisplay.innerText = getShortName(selectedSystemVoice);
     } else {
         currentVoiceNameDisplay.innerText = "System Default";
@@ -100,11 +98,22 @@ function updateVoiceDisplay() {
 }
 
 function getVoiceIcon(name) {
-    if (!name) return '👤'; 
+    
+    if (!name) return '👤';
     const n = name.toLowerCase();
-    if (n.includes('male') || n.includes('guy') || n.includes('david')) return '👨';
-    if (n.includes('female') || n.includes('aria') || n.includes('jenny') || n.includes('zira')) return '👩';
-    return '👤'; 
+
+    if (n.includes('female') || n.includes('zira') || n.includes('aria') || 
+    n.includes('jenny') || n.includes('clara') || n.includes('li-mu')) {
+    return '👩';
+    }
+
+    if (n.includes('male') || n.includes('david') || n.includes('guy') || 
+        n.includes('stefan') || n.includes('danny') || n.includes('frank') ||
+        n.includes('liang') || n.includes('mark')) {
+        return '👨';
+    }
+
+    return '👤';
 }
 
 /**
@@ -115,7 +124,7 @@ function createDeck() {
     let deckData = [...questions];
     if (shuffleTick.checked) deckData.sort(() => Math.random() - 0.5);
 
-    const currentVoice = (priorityVoiceTick.checked && selectedSystemVoice) 
+    const currentVoice = (selectedSystemVoice) 
                      ? selectedSystemVoice 
                      : (voiceSelect.value === 'male' ? 'Guy' : 'Aria');
     const genderIcon = getVoiceIcon(currentVoice);
@@ -230,7 +239,7 @@ function dealCard() {
     avatarBox.style.display = isShowText ? 'none' : 'block';
 
     let activeVoiceName = selectedSystemVoice; 
-    if (!priorityVoiceTick.checked || !activeVoiceName) {
+    if ( !activeVoiceName) {
         const isMale = voiceSelect.value === 'male';
         activeVoiceName = isMale ? 'Guy' : 'Aria'; 
     }
@@ -335,7 +344,6 @@ function togglePause() {
 }
 
 // --- Debug Logic ---
-const debugTrigger = document.getElementById('debugTrigger');
 const debugOverlay = document.getElementById('debugOverlay');
 const closeDebug = document.getElementById('closeDebug');
 const voiceTableBody = document.querySelector('#voiceTable tbody');
@@ -351,7 +359,7 @@ function showDebugVoices() {
     
     // Logic to determine current active voice for Status display
     let currentActiveVoiceName = "";
-    if (priorityVoiceTick.checked && selectedSystemVoice) {
+    if (selectedSystemVoice) {
         currentActiveVoiceName = selectedSystemVoice;
     } else {
         const getBest = (vList) => {
@@ -383,9 +391,9 @@ function showDebugVoices() {
         // Click name to select
         row.querySelector('.voice-name').onclick = () => {
             selectedSystemVoice = voice.name;
-            priorityVoiceTick.checked = true;
+            // priorityVoiceTick.checked = true;
             localStorage.setItem('selectedSystemVoice', voice.name);
-            localStorage.setItem('priorityVoice', 'true');
+            // localStorage.setItem('priorityVoice', 'true');
             updateVoiceDisplay();
             showDebugVoices(); 
         };
@@ -404,8 +412,6 @@ function showDebugVoices() {
 
     debugOverlay.classList.remove('hidden');
 }
-
-debugTrigger.addEventListener('click', showDebugVoices);
 
 closeDebug.addEventListener('click', () => {
     debugOverlay.classList.add('hidden');
@@ -455,11 +461,11 @@ voiceTrigger.onclick = () => {
 voiceSelect.addEventListener('change', () => {
     // Reset lựa chọn trong bảng
     selectedSystemVoice = null;
-    priorityVoiceTick.checked = false;
+    // priorityVoiceTick.checked = false;
     
     // Xóa khỏi bộ nhớ
     localStorage.removeItem('selectedSystemVoice');
-    localStorage.setItem('priorityVoice', 'false');
+    // localStorage.setItem('priorityVoice', 'false');
     
     // Nếu bảng debug đang mở thì cập nhật lại giao diện
     if (!debugOverlay.classList.contains('hidden')) {
@@ -467,9 +473,9 @@ voiceSelect.addEventListener('change', () => {
     }
 });
 
-priorityVoiceTick.addEventListener('change', () => {
-    localStorage.setItem('priorityVoice', priorityVoiceTick.checked);
-});
+// priorityVoiceTick.addEventListener('change', () => {
+//     localStorage.setItem('priorityVoice', priorityVoiceTick.checked);
+//  });
 
 window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
 
