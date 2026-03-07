@@ -42,6 +42,7 @@ const btnDeal = document.getElementById('btnDeal');
 const voiceTrigger = document.getElementById('voiceTrigger');
 const currentVoiceNameDisplay = document.getElementById('currentVoiceName');
 
+
 /**
  * Speech Synthesis Logic
  */
@@ -98,6 +99,14 @@ function updateVoiceDisplay() {
     }
 }
 
+function getVoiceIcon(name) {
+    if (!name) return '👤'; 
+    const n = name.toLowerCase();
+    if (n.includes('male') || n.includes('guy') || n.includes('david')) return '👨';
+    if (n.includes('female') || n.includes('aria') || n.includes('jenny') || n.includes('zira')) return '👩';
+    return '👤'; 
+}
+
 /**
  * Initialize Deck UI
  */
@@ -106,16 +115,23 @@ function createDeck() {
     let deckData = [...questions];
     if (shuffleTick.checked) deckData.sort(() => Math.random() - 0.5);
 
+    const currentVoice = (priorityVoiceTick.checked && selectedSystemVoice) 
+                     ? selectedSystemVoice 
+                     : (voiceSelect.value === 'male' ? 'Guy' : 'Aria');
+    const genderIcon = getVoiceIcon(currentVoice);
+
+
     deckData.forEach((q, index) => {
         const card = document.createElement('div');
         card.className = 'card';
         card.style.zIndex = deckData.length - index;
         
+        
         card.innerHTML = `
             <div class="card-face card-front">Deck</div>
             <div class="card-face card-back">
                 <div class="avatar-box" style="font-size: 80px; margin-bottom: 10px;">
-                    ${voiceSelect.value === 'male' ? '👨' : '👩'}
+                    ${genderIcon}
                 </div>
                 <div class="q-text">${q}</div>
             </div>
@@ -146,6 +162,11 @@ function initGame() {
     clearInterval(timerInterval);
     isPaused = false;
     history = [];
+
+    const savedShowText = localStorage.getItem('lastShowText');
+    if (savedShowText !== null) {
+        showTextTick.checked = (savedShowText === 'true');
+    }
 
     // Sync settings with UI
     const mode = timerMode.value;
@@ -202,7 +223,19 @@ function dealCard() {
     const qText = currentCard.querySelector('.q-text');
     const isShowText = showTextTick.checked;
     qText.style.display = isShowText ? 'block' : 'none';
-    currentCard.querySelector('.avatar-box').style.display = isShowText ? 'none' : 'block';
+
+    // currentCard.querySelector('.avatar-box').style.display = isShowText ? 'none' : 'block';
+
+    const avatarBox = currentCard.querySelector('.avatar-box');
+    avatarBox.style.display = isShowText ? 'none' : 'block';
+
+    let activeVoiceName = selectedSystemVoice; 
+    if (!priorityVoiceTick.checked || !activeVoiceName) {
+        const isMale = voiceSelect.value === 'male';
+        activeVoiceName = isMale ? 'Guy' : 'Aria'; 
+    }
+
+    avatarBox.innerText = getVoiceIcon(activeVoiceName);
 
     history.push(currentCard);
     countDisplay.innerText = history.length;
@@ -338,14 +371,14 @@ function showDebugVoices() {
         
         if (isCurrentlySelected) row.style.backgroundColor = "#e7f1ff";
 
-        row.innerHTML = `
-            <td class="voice-name" style="cursor:pointer; font-weight:${isCurrentlySelected ? 'bold' : 'normal'}">
-                ${voice.name}
-            </td>
-            <td>${voice.lang}</td>
-            <td class="status-cell">${isCurrentlySelected ? '<span style="color: #198754;">● Selected</span>' : ''}</td>
-            <td><button class="btn-test" style="padding: 2px 8px; cursor: pointer;">Test</button></td>
-        `;
+       row.innerHTML = `
+    <td class="voice-name" style="cursor:pointer; font-weight:${isCurrentlySelected ? 'bold' : 'normal'}">
+        ${getVoiceIcon(voice.name)} ${voice.name}
+    </td>
+    <td>${voice.lang}</td>
+    <td class="status-cell">${isCurrentlySelected ? '<span style="color: #198754;">● Selected</span>' : ''}</td>
+    <td><button class="btn-test" style="padding: 2px 8px; cursor: pointer;">Test</button></td>
+`;
 
         // Click name to select
         row.querySelector('.voice-name').onclick = () => {
