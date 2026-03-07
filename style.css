@@ -152,7 +152,7 @@ label:has(input[disabled]) {
             max-width: 400px;       /* Giới hạn lại để không quá dài trên tablet */
             margin-left: 0 !important;
         }
-}
+
 
     #btnDeal { order: 1; }
     #btnPause { order: 2; }
