@@ -281,6 +281,7 @@ function dealCard() {
  * Undo Logic
  */
 function undoCard() {
+    isDealing = false;
     if (history.length === 0) return;
     
     const isMobile = window.innerWidth <= 768;
