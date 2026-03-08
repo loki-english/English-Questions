@@ -225,15 +225,18 @@ function dealCard() {
     const isShowText = showTextTick.checked;
     qText.style.display = isShowText ? 'block' : 'none';
 
-    // currentCard.querySelector('.avatar-box').style.display = isShowText ? 'none' : 'block';
-
+    //AVATAR
     const avatarBox = currentCard.querySelector('.avatar-box');
     avatarBox.style.display = isShowText ? 'none' : 'block';
 
+    //VOICES
+    let allVoices = window.speechSynthesis.getVoices();
+
     let activeVoiceName = selectedSystemVoice; 
     if ( !activeVoiceName) {
-        const isMale = voiceSelect.value === 'male';
-        activeVoiceName = isMale ? 'Guy' : 'Aria'; 
+        const voices = allVoices.filter(v => v.lang.toLowerCase().includes('en'));
+        const best = voices.find(v => v.lang.includes('en-US') && v.name.includes('Aria')) || voices[0];
+        if (best) activeVoiceName = best.name;
     }
 
     avatarBox.innerText = getVoiceIcon(activeVoiceName);
@@ -341,34 +344,15 @@ const closeDebug = document.getElementById('closeDebug');
 const voiceTableBody = document.querySelector('#voiceTable tbody');
 
 function showDebugVoices() {
-    // Get all system voices
-    let allVoices = window.speechSynthesis.getVoices();
-    
-    // FILTER: Only keep voices where language starts with 'en'
-    const voices = allVoices.filter(v => v.lang.toLowerCase().startsWith('en'));
 
-    // const isMale = voiceSelect.value === 'male';
-    
-    // Logic to determine current active voice for Status display
+    let allVoices = window.speechSynthesis.getVoices();
+    const voices = allVoices.filter(v => v.lang.toLowerCase().includes('en'));
+
     let currentActiveVoiceName = selectedSystemVoice;
     if (!currentActiveVoiceName) {
-    const voices = allVoices.filter(v => v.lang.toLowerCase().startsWith('en'));
-    const best = voices.find(v => v.lang.includes('en-US') && v.name.includes('Aria')) || voices[0];
-    if (best) currentActiveVoiceName = best.name;
-}
-
-
-    // if (selectedSystemVoice) {
-    //     currentActiveVoiceName = selectedSystemVoice;
-    // } else {
-    //     const getBest = (vList) => {
-    //         return vList.find(v => v.lang.includes('en-US') && v.name.includes('Natural') && (isMale ? v.name.includes('Guy') : v.name.includes('Aria'))) ||
-    //                vList.find(v => v.lang.includes('en-US') && v.name.toLowerCase().includes(isMale ? 'male' : 'female')) ||
-    //                vList.find(v => v.lang.includes('en-US'));
-    //     };
-    //     const best = getBest(voices); // Using filtered list
-    //     if (best) currentActiveVoiceName = best.name;
-    // }
+        const best = voices.find(v => v.lang.includes('en-US') && v.name.includes('Aria')) || voices[0];
+        if (best) currentActiveVoiceName = best.name;
+    }       
 
     voiceTableBody.innerHTML = ''; 
 
@@ -379,13 +363,13 @@ function showDebugVoices() {
         if (isCurrentlySelected) row.style.backgroundColor = "#e7f1ff";
 
        row.innerHTML = `
-    <td class="voice-name" style="cursor:pointer; font-weight:${isCurrentlySelected ? 'bold' : 'normal'}">
-        ${getVoiceIcon(voice.name)} ${voice.name}
-    </td>
-    <td>${voice.lang}</td>
-    <td class="status-cell">${isCurrentlySelected ? '<span style="color: #198754;">● Selected</span>' : ''}</td>
-    <td><button class="btn-test" style="padding: 2px 8px; cursor: pointer;">Test</button></td>
-`;
+            <td class="voice-name" style="cursor:pointer; font-weight:${isCurrentlySelected ? 'bold' : 'normal'}">
+                ${getVoiceIcon(voice.name)} ${voice.name}
+            </td>
+            <td>${voice.lang}</td>
+            <td class="status-cell">${isCurrentlySelected ? '<span style="color: #198754;">● Selected</span>' : ''}</td>
+            <td><button class="btn-test" style="padding: 2px 8px; cursor: pointer;">Test</button></td>
+        `;
 
         // Click name to select
         row.querySelector('.voice-name').onclick = () => {
@@ -444,6 +428,7 @@ const syncSettings = () => {
     localStorage.setItem('lastShuffle', shuffleTick.checked);
     localStorage.setItem('lastShowText', showTextTick.checked);
     localStorage.setItem('lastTimerValue', inputTime.value);
+    localStorage.setItem('selectedSystemVoice', selectedSystemVoice || '');
 };
 
 [timerMode, shuffleTick, showTextTick, inputTime].forEach(el => {
@@ -456,25 +441,6 @@ const syncSettings = () => {
 voiceTrigger.onclick = () => {
     showDebugVoices();
 };
-
-// voiceSelect.addEventListener('change', () => {
-//     // Reset lựa chọn trong bảng
-//     selectedSystemVoice = null;
-//     // priorityVoiceTick.checked = false;
-    
-//     // Xóa khỏi bộ nhớ
-//     localStorage.removeItem('selectedSystemVoice');
-//     // localStorage.setItem('priorityVoice', 'false');
-    
-//     // Nếu bảng debug đang mở thì cập nhật lại giao diện
-//     if (!debugOverlay.classList.contains('hidden')) {
-//         showDebugVoices();
-//     }
-// });
-
-// priorityVoiceTick.addEventListener('change', () => {
-//     localStorage.setItem('priorityVoice', priorityVoiceTick.checked);
-//  });
 
 window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
 
