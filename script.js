@@ -44,7 +44,7 @@ const currentVoiceNameDisplay = document.getElementById('currentVoiceName');
  * Speech Synthesis Logic
  */
 function speak(text) {
-    if (window.innerWidth > 768) window.speechSynthesis.cancel();
+    window.speechSynthesis.cancel();
 
     const utterance = new SpeechSynthesisUtterance(text);
     const voices = window.speechSynthesis.getVoices();
@@ -196,18 +196,24 @@ function initGame() {
     countDisplay.innerText = "0";
 }
 
+let isDealing = false;
 /**
  * Deal a card from the deck
  */
 function dealCard() {
-    if (isPaused) return;
-    
+    if (isPaused || isDealing) return;
+    isDealing = true;
+
+    clearInterval(timerInterval);
+
     const cardsToDeal = leftSlot.querySelectorAll('.card:not(.is-dealt)');
     if (cardsToDeal.length === 0) return;
     const currentCard = cardsToDeal[0];
 
+    if (currentCard.classList.contains('is-moving-right')) return;
     shuffleTick.disabled = true;
 
+    window.speechSynthesis.cancel();
     const isMobile = window.innerWidth <= 768;
     if (isMobile) {
         const currentVisible = leftSlot.querySelectorAll('.card.is-dealt:not(.is-hidden-mobile)');
@@ -250,6 +256,7 @@ function dealCard() {
 
     setTimeout(() => {
         speak(qText.innerText);
+        isDealing = false;
     }, isMobile ? 400 : 200);
 
     // LAZY LOAD: Add remaining cards from masterDeckData
