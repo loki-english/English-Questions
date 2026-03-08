@@ -105,56 +105,62 @@ function getVoiceIcon(name) {
     return '👤';
 }
 
+let masterDeckData = [];
 /**
  * Initialize Deck UI
  */
 function createDeck() {
     leftSlot.innerHTML = '';
-    let deckData = [...questions];
-    if (shuffleTick.checked) deckData.sort(() => Math.random() - 0.5);
+    masterDeckData = [...questions];
+    if (shuffleTick.checked) masterDeckData.sort(() => Math.random() - 0.5);
 
-    const currentVoice = selectedSystemVoice;
-    const genderIcon = getVoiceIcon(currentVoice);
+    const fragment = document.createDocumentFragment(); //cache DOM
+    const initialCount = Math.min(masterDeckData.length, 15);
 
+    for (let i = 0; i < initialCount; i++) {
+        const card = createCardElement(masterDeckData[i], i, masterDeckData.length);
+        fragment.appendChild(card);
+    }
+    
+    leftSlot.appendChild(fragment);
+}
 
-    deckData.forEach((q, index) => {
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.style.zIndex = deckData.length - index;
-        
-        
-        card.innerHTML = `
-            <div class="card-face card-front">Deck</div>
-            <div class="card-face card-back">
-                <div class="avatar-box" style="font-size: 80px; margin-bottom: 10px;">
-                    ${genderIcon}
-                </div>
-                <div class="q-text">${q}</div>
+function createCardElement(question, index, total) {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.style.zIndex = total - index;
+    
+    const currentVoiceName = selectedSystemVoice || "Aria";
+    const genderIcon = getVoiceIcon(currentVoiceName);
+
+    card.innerHTML = `
+        <div class="card-face card-front">Deck</div>
+        <div class="card-face card-back">
+            <div class="avatar-box" style="font-size: 80px; margin-bottom: 10px;">
+                ${genderIcon}
             </div>
-        `;
+            <div class="q-text">${question}</div>
+        </div>
+    `;
 
-        // Handle clicks on cards
-        card.onclick = (e) => {
-            e.stopPropagation();
-            const isPC = window.innerWidth > 768;
-            
-            // Only allow Undo-on-click if it is a dealt card AND the device is a PC
-            if (card.classList.contains('is-dealt') && isPC) {
-                undoCard();
-            } else {
-                // On mobile or if card is in deck, clicking deals a new card
-                if (!isPaused) dealCard();
-            }
-        };
-
-        leftSlot.appendChild(card);
-    });
+    card.onclick = (e) => {
+        e.stopPropagation();
+        if (window.innerWidth > 768 && card.classList.contains('is-dealt')) {
+            undoCard();
+        } else if (!isPaused) {
+            dealCard();
+        }
+    };
+    return card;
 }
 
 /**
  * Start/Reset Game Settings
  */
 function initGame() {
+    createDeck();
+    updateTimerDisplay();
+
     document.body.addEventListener('touchstart', () => {
     const v = new SpeechSynthesisUtterance("");
     window.speechSynthesis.speak(v);
@@ -187,9 +193,7 @@ function initGame() {
 
     seconds = (mode === 'down') ? (parseInt(inputTime.value) || 5) : 0;
     timerDisplay.style.color = '#d63384';
-    updateTimerDisplay();
     countDisplay.innerText = "0";
-    createDeck();
 }
 
 /**
@@ -198,18 +202,17 @@ function initGame() {
 function dealCard() {
     if (isPaused) return;
     
-    const isMobile = window.innerWidth <= 768;
     const cardsToDeal = leftSlot.querySelectorAll('.card:not(.is-dealt)');
-    
     if (cardsToDeal.length === 0) return;
-
-    const currentVisible = leftSlot.querySelectorAll('.card.is-dealt:not(.is-hidden-mobile)');
-    currentVisible.forEach(c => c.classList.add('is-hidden-mobile'));
-
-    shuffleTick.disabled = true;
     const currentCard = cardsToDeal[0];
 
+    shuffleTick.disabled = true;
+
+    const isMobile = window.innerWidth <= 768;
     if (isMobile) {
+        const currentVisible = leftSlot.querySelectorAll('.card.is-dealt:not(.is-hidden-mobile)');
+        currentVisible.forEach(c => c.classList.add('is-hidden-mobile'));
+
         currentCard.classList.add('is-moving-right');
         setTimeout(() => {
             currentCard.classList.remove('is-moving-right');
@@ -221,6 +224,7 @@ function dealCard() {
         currentCard.style.zIndex = 100 + history.length;
     }
 
+    //TEXT
     const qText = currentCard.querySelector('.q-text');
     const isShowText = showTextTick.checked;
     qText.style.display = isShowText ? 'block' : 'none';
@@ -247,6 +251,17 @@ function dealCard() {
     setTimeout(() => {
         speak(qText.innerText);
     }, isMobile ? 400 : 200);
+
+    // LAZY LOAD: Add remaining cards from masterDeckData
+    const renderedCards = leftSlot.querySelectorAll('.card').length;
+    if (renderedCards < masterDeckData.length) {
+        const nextCard = createCardElement(
+            masterDeckData[renderedCards], 
+            renderedCards, 
+            masterDeckData.length
+        );
+        leftSlot.appendChild(nextCard);
+    }
 
     if (timerMode.value === 'down') {
         seconds = parseInt(inputTime.value) || 5;
@@ -374,9 +389,7 @@ function showDebugVoices() {
         // Click name to select
         row.querySelector('.voice-name').onclick = () => {
             selectedSystemVoice = voice.name;
-            // priorityVoiceTick.checked = true;
             localStorage.setItem('selectedSystemVoice', voice.name);
-            // localStorage.setItem('priorityVoice', 'true');
             updateVoiceDisplay();
             showDebugVoices(); 
         };
