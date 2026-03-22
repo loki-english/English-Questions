@@ -8,25 +8,25 @@ const questions = [
         id: 1,
         q: "How are you?",
         answers: ["I'm good", "I'm doing good"],
-        answerAI: ["I'm great, how about you?", "Doing well, thanks!", "Not too bad, you?"]
+        answerAI: ["I'm great, how about you?", "Doing well, thanks!", "Not too bad, you?","Pretty good, thanks"]
     },
     {
         id: 2,
         q: "What are you doing?",
         answers: ["I'm learning", "I'm working"],
-        answerAI: ["Just hanging out.", "I'm a bit busy right now.", "Nothing much, just chilling."]
+        answerAI: ["Just hanging out.", "I'm a bit busy right now.", "Nothing much, just chilling","Working on some stuff."]
     },
     {
         id: 3,
         q: "Where are you?",
         answers: ["I'm at home", "I'm at school", "I'm on my way", "I'm at work"],
-        answerAI: ["I'm at the mall.", "I'm just outside.", "I'm at a cafe."]
+        answerAI: ["I'm at the mall.", "I'm just outside.", "I'm at a cafe.","I'm out with friends.","Just stepped out for a bit."]
     },
     {
         id: 4,
         q: "Are you busy?",
         answers: ["Yes, I'm busy now", "No, I'm free now", "No, I'm free today"],
-        answerAI: ["A little bit, why?", "Not really, I'm free.", "Yes, I have a lot to do."]
+        answerAI: ["A little bit, why?", "Not really, I'm free.","Not really, what's up?", "Yes, I have a lot to do."]
     },
     {
         id: 5,
@@ -38,13 +38,13 @@ const questions = [
         id: 6,
         q: "Did you eat yet?",
         answers: [ "Already", "Not yet"],
-        answerAI: ["Yes, I just had lunch.", "No, I'm starving!", "I'm about to eat."]
+        answerAI: ["Yes, I just had lunch.", "Not yet, I'm starving!", "I'm about to eat.","Yeah, just had lunch."]
     },
     {
         id: 7,
         q: "Where are you going?",
         answers: ["I'm going to my class", "I'm going home"],
-        answerAI: ["I'm headed to the gym.", "Just going for a walk.", "I'm going to meet a friend."]
+        answerAI: ["I'm headed to the gym.", "Just going for a walk.", "I'm going to meet a friend.","Just grabbing some coffee.","I'm on my way to meet a friend."]
     },
     {
         id: 8,
@@ -56,7 +56,7 @@ const questions = [
         id: 9,
         q: "Are you free today?",
         answers: ["Yes, I am", "No, I'm not", "No, I'm busy with work"],
-        answerAI: ["I'm free after 5 PM.", "Sorry, I'm tied up all day.", "Yes, what's the plan?"]
+        answerAI: ["I'm free after 5 PM.", "Sorry, I'm tied up all day.", "Yes, what's the plan?","My day is pretty packed."]
     },
     {
         id: 10,
@@ -74,13 +74,13 @@ const questions = [
         id: 12,
         q: "What do you mean?",
         answers: ["I just want to help you"],
-        answerAI: ["What I'm trying to say is...", "I'm not sure how to explain it.", "Basically, it's like this..."]
+        answerAI: ["What I'm trying to say is...", "I'm not sure how to explain it.", "Basically, it's like this...","I mean, it's not a big deal."]
     },
     {
         id: 13,
         q: "Are you okay?",
         answers: ["Yes, I'm okay", "No, I'm not feeling well", "I'm fine don't worry"],
-        answerAI: ["Yeah, I'm fine, thanks.", "I'm just a bit tired.", "Actually, I'm feeling great!"]
+        answerAI: ["Yeah, I'm fine, thanks.", "I'm just a bit tired.", "Actually, I'm feeling great!","I'm good, don't worry about me."]
     },
     {
         id: 14,
@@ -92,7 +92,7 @@ const questions = [
         id: 15,
         q: "What's going on?",
         answers: ["I'm losing my mind", "I have a headache"],
-        answerAI: ["Not much, just waiting.", "We're just discussing the project.", "Everything is under control."]
+        answerAI: ["Not much, just waiting.", "We're just discussing the project.", "Everything is under control.","Just some drama at work."]
     },
     {
         id: 16,
@@ -188,7 +188,7 @@ const questions = [
         id: 31,
         q: "Where do you live?",
         answers: ["I live in My Tho city", "I live in the south of VN"],
-        answerAI: ["I live near the city center.", "I stay in an apartment nearby.", "I'm currently living in HCMC."]
+        answerAI: ["I live near the city center.", "I stay in an apartment nearby.", "I'm currently living in HCMC.","Just around the corner.","In a small apartment downtown.","I live near here."]
     },
     {
         id: 32,
@@ -206,7 +206,7 @@ const questions = [
         id: 34,
         q: "What day is it today?",
         answers: ["It's March the second"],
-        answerAI: ["It's Monday.", "I think it's the 15th.", "It's a holiday today!"]
+        answerAI: ["It's Monday.", "I think it's the 15th.", "It's a holiday today!","The 15th, I think."]
     },
     {
         id: 35,
@@ -248,7 +248,7 @@ const questions = [
         id: 41,
         q: "How was your day?",
         answers: ["I got some troubles with my work", "Nothing much"],
-        answerAI: ["It was pretty good.", "Quite busy, actually.", "Same as usual."]
+        answerAI: ["It was pretty good.", "Quite busy, actually.", "Same as usual.","A bit exhausting, to be honest."]
     },
     {
         id: 42,
@@ -266,7 +266,7 @@ const questions = [
         id: 44,
         q: "Did you like it?",
         answers: ["Yes I did. I really enjoyed it", "No, I didn't. I was awful"],
-        answerAI: ["I loved it!", "It was okay.", "Not really my style."]
+        answerAI: ["I loved it!", "It was okay.", "Not really my style.","Not really my thing."]
     },
     {
         id: 45,
@@ -284,7 +284,7 @@ const questions = [
         id: 47,
         q: "Why did you do that?",
         answers: ["I don't know", "I want to quit my job"],
-        answerAI: ["I thought it was the right thing to do.", "I wasn't thinking clearly.", "I had no other choice."]
+        answerAI: ["I thought it was the right thing to do.", "I wasn't thinking clearly.", "I had no other choice.","I had no choice."]
     },
     {
         id: 48,
@@ -320,7 +320,7 @@ const questions = [
         id: 53,
         q: "When will you arrive?",
         answers: ["In 30 minutes", "I'm coming"],
-        answerAI: ["Around 6 PM.", "I'm on my way now.", "I'll be a bit late."]
+        answerAI: ["Around 6 PM.", "I'm on my way now.", "I'll be a bit late.","I'll be there shortly."]
     },
     {
         id: 54,
@@ -350,7 +350,7 @@ const questions = [
         id: 58,
         q: "Can you explain that?",
         answers: ["Sure, what I mean is ..."],
-        answerAI: ["Let me try to put it another way.", "It's basically a way to...", "Sure, so the idea is...","Of course, I mean we should start from the beginning."]
+        answerAI: ["Let me try to put it another way.", "It's basically a way to...", "Sure, so the idea is...","Of course, I mean we should start from the beginning.","Let me put it another way."]
     },
     {
         id: 59,
@@ -380,7 +380,7 @@ const questions = [
         id: 63,
         q: "Why are you upset?",
         answers: ["I have a lot of problems", "I have some problems with my work", "I just broke up with my girlfriend /boyfriend"],
-        answerAI: ["I'm just having a bad day.", "Someone was rude to me.", "I lost my wallet."]
+        answerAI: ["I'm just having a bad day.", "Someone was rude to me.", "I lost my wallet.","I'm just stressed out."]
     },
     {
         id: 64,
