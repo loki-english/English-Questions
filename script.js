@@ -343,14 +343,14 @@ const questions = [
     {
         id: 57,
         q: "Can you repeat that?",
-        answers: ["Of course. Sure, I want to ask you about...", "I want to tell you about..."],
-        answerAI: ["Sorry, I didn't catch that.", "Could you say that again?", "Sure, I said..."]
+        answers: ["Of course","Sure","I want to ask you about...", "I want to tell you about..."],
+        answerAI: ["Sure, I'll say it again slowly","Oh, sorry! I said I'm going home now", "No problem, let me repeat that for you."]
     },
     {
         id: 58,
         q: "Can you explain that?",
         answers: ["Sure, what I mean is ..."],
-        answerAI: ["Let me try to put it another way.", "It's basically a way to...", "Sure, so the idea is..."]
+        answerAI: ["Let me try to put it another way.", "It's basically a way to...", "Sure, so the idea is...","Of course, I mean we should start from the beginning."]
     },
     {
         id: 59,
