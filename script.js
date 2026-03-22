@@ -924,7 +924,7 @@ window.addEventListener('keydown', (e) => {
         const index = e.key;
         const targetBtn = document.querySelector(`.btn-ans-speak[data-index="${index}"]`);
         
-        console.log("Phím bấm:", index, "Nút tìm thấy:", targetBtn); // Dòng này để debug trên GitHub
+       // console.log("Phím bấm:", index, "Nút tìm thấy:", targetBtn); // Dòng này để debug trên GitHub
 
         if (targetBtn) {
             e.preventDefault();
