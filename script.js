@@ -325,13 +325,13 @@ const questions = [
     {
         id: 54,
         q: "Are you still working?",
-        answers: ["Yes, I am", "No, I am not. I'm still in the office ","I'm at home right now","I'm still at work"],
+        answers: ["Yes, I am", "No, I am not","I'm still in the office ","I'm at home right now","I'm still at work"],
         answerAI: ["Almost finished.", "Yes, I have to work late.", "No, I'm off now."]
     },
     {
         id: 55,
         q: "Are you leaving?",
-        answers: ["Yes, I am", "No, I'm not. (I gotta go / I need to be home before 10)"],
+        answers: ["Yes, I am", "No, I'm not.","I gotta go "," I need to be home before 10)"],
         answerAI: ["Yeah, I'm heading out now.", "Not yet, a few more minutes.", "Yes, see you tomorrow!"]
     },
     {
