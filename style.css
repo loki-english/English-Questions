@@ -45,7 +45,7 @@ body {
     color: #333;
 }
 
-.timer-wrapper {
+/* .timer-wrapper {
     background: #fff0f6;
     padding: 5px 15px;
     border-radius: 12px;
@@ -55,14 +55,71 @@ body {
     box-shadow: 0 4px 10px rgba(0,0,0,0.05);
     display: inline-block;
     margin-top: 5px; 
+} */
+
+/* style.css */
+
+/* Accordion Settings */
+.settings-accordion {
+    width: 100%;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    overflow: hidden;
 }
 
-.settings-right {
+.settings-header {
+    padding: 10px 20px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+    border-bottom: 1px solid #eee;
+}
+
+.settings-header .timer-wrapper {
+    margin: 0;
+    padding: 0;
+    margin-left: auto;
+}
+
+.settings-header #timerDisplay {
+    font-size: 1.1em;
+    color: #d63384;
+}
+
+.settings-arrow {
+    transition: transform 0.3s ease; /* Hiệu ứng xoay mượt mà */
+    padding-left: 10px;
+}
+
+.settings-content {
+    display: none; /* Ẩn mặc định */
+    padding: 15px 20px;
+}
+
+.settings-content.show {
+    display: flex; /* Hiện khi có class show */
+    justify-content: space-between;
+    flex-wrap: wrap; /* Cho phép các phần tử tự xuống dòng khi không đủ chỗ */
+}
+
+
+.settings-content .settings-left {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-right: 20px;
+}
+
+.settings-content .settings-right {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
     gap: 5px;
 }
+
 
 .time-input-hidden, .hidden { display: none !important; }
 
@@ -104,6 +161,102 @@ body {
 }
 
 .card.is-dealt .card-front { visibility: hidden; }
+
+/* Answer Accordion Styles */
+.accordion-container {
+    margin: 20px auto;
+    width: 100%;
+    max-width: 900px;
+    background: #fff;
+    border-radius: px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+.accordion-header {
+    background: #f8f9fa;
+    padding: 10px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+    border-bottom: 1px solid #eee;
+}
+
+.accordion-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Khoảng cách giữa 🤖, All và Mũi tên */
+}
+
+.accordion-controls label {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.9em;
+    cursor: pointer;
+    background: #eee;
+    padding: 2px 8px;
+    border-radius: 12px;
+    transition: 0.2s;
+}
+
+.accordion-controls label:hover {
+    background: #e0e0e0;
+}
+
+.accordion-controls input {
+    cursor: pointer;
+    margin: 0;
+}
+
+#accordionArrow {
+    margin-left: 5px;
+    transition: transform 0.3s;
+}
+
+.accordion-content {
+    display: none;
+    padding: 10px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.accordion-content.show { display: block; }
+
+.answer-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #fafafa;
+}
+
+.btn-play-ans {
+    background: #e7f1ff;
+    border: none;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.answer-item.ai-style {
+    background-color: #f0f7ff;
+    border-left: 4px solid #007bff;
+    font-style: italic;
+}
+
+.answer-item.ai-style b {
+    color: #007bff;
+    margin-right: 5px;
+}
+
+.btn-play-ans:hover { background: #cfe2ff; }
+
+.hidden { display: none !important; }
 
 /* Footer & Buttons */
 .footer-info { display: flex; justify-content: space-between; align-items: center; }
@@ -215,12 +368,24 @@ label:has(input[disabled]) {
     .control-box select { max-width: 120px; font-size: 0.9rem; }
     #inputTime { width: 40px; }
     .settings-right {
-        align-items: center;
-        flex-direction: row;
-        justify-content: space-around;
+        display: flex !important;
+        flex-direction: row !important; /* Ép buộc nằm ngang */
+        justify-content: flex-start !important; /* Ép buộc căn trái */
+        align-items: center !important;
+        gap: 15px !important;
+
         background: var(--bg-soft);
+        width: 100%;
         padding: 10px;
         border-radius: 15px;
+    }
+    .settings-right label {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        white-space: nowrap;
+        cursor: pointer;
+        width: auto !important; /* Không để label tự giãn ra */
     }
     .game-area { justify-content: center; }
     .slot:last-child { display: none; }
@@ -232,6 +397,29 @@ label:has(input[disabled]) {
     .card.is-returning { transition: transform 0.3s ease-in-out, opacity 0.2s !important; transform: translateX(0) rotateY(0deg) !important; opacity: 1; }
     .card.is-hidden-mobile { opacity: 0 !important; visibility: hidden; }
 
+    .answer-item {
+    display: flex !important;
+    align-items: flex-start !important; /* Căn các phần tử bắt đầu từ phía trên */
+    justify-content: flex-start !important; /* Ép toàn bộ nội dung dạt sang trái */
+    text-align: left !important; /* Đảm bảo văn bản không bị căn giữa */
+    padding: 12px 10px;
+    gap: 10px; /* Khoảng cách giữa icon, chữ và nút loa */
+    width: 100%;
+    box-sizing: border-box;
+    border-bottom: 1px solid #f0f0f0;
+    }   
+    .ans-text {
+    flex: 1; /* Để văn bản chiếm hết không gian ở giữa, đẩy nút loa sang phải */
+    font-size: 1rem;
+    line-height: 1.4;
+    display: flex;
+    align-items: flex-start;
+    }
+    /* Cố định chiều rộng của icon 🤖 là text hoặc img */
+    .ans-text b, .ai-icon {
+        min-width: 25px; 
+        display: inline-block;
+    }
     .footer-info { flex-direction: column; align-items: flex-start !important; padding-left: 15px; }
     .button-group { display: flex; flex-direction: column; width: 100%; gap: 8px; }
     #btnDeal, #btnPause, #btnUndo, #btnReset {

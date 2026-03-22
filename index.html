@@ -30,9 +30,21 @@
             </div>
         </div>
         
-        <div class="top-controls">
+     <div class="top-controls">
+    <div id="settingsAccordion" class="settings-accordion">
+        <div class="settings-header" onclick="toggleSettingsAccordion()">
+            <span>⚙️ Settings</span>
+            
+            <div id="timerContainer" class="timer-wrapper hidden">
+                <span id="timerDisplay">00:00</span>
+            </div>
+
+            <span id="settingsArrow" class="settings-arrow">▼</span>
+        </div>
+        
+        <div id="settingsContent" class="settings-content">
             <div class="settings-left">
-                <div  id="voiceTrigger"  class="control-box">
+                <div id="voiceTrigger" class="control-box">
                     <label>Voice:</label>
                     <span id="currentVoiceName">Female</span>
                     <span class="arrow-down"></span>
@@ -46,22 +58,42 @@
                     </select>
                     <input type="number" id="inputTime" value="5"><span>s</span>
                 </div>
+                <div class="control-box">
+                    <label>Start from:</label>
+                    <input type="number" id="startFromId" value="1" min="1" max="50" style="width: 50px;">
+                </div>
             </div>
 
             <div class="settings-right">
                 <label><input type="checkbox" id="shuffleTick"> Shuffle</label>
                 <label><input type="checkbox" id="showTextTick" checked> Show Text</label>
-
-                <div id="timerContainer" class="timer-wrapper hidden">
-                    <span id="timerDisplay">00:00</span>
-                </div>
+                <!-- <label><input type="checkbox" id="aiAnswerTick"> AI Answer</label> -->
             </div>
         </div>
+    </div>
+</div>
 
         <div class="game-area">
             <div class="slot" id="leftSlot">
                 </div>
             <div class="slot" id="rightSlot">
+                </div>
+        </div>
+
+        <div id="answerAccordion" class="accordion-container hidden">
+            <div class="accordion-header" onclick="toggleAccordion()">
+                <span>💡 Suggested Answers</span>
+                <div class="accordion-controls" onclick="event.stopPropagation()">
+            <label title="AI Answer">
+                <input type="checkbox" id="aiAnswerTick"> 🤖
+            </label>
+            <label title="Show All">
+                <input type="checkbox" id="showAllTick"> All
+            </label>
+            <span id="accordionArrow">▼</span>
+        </div>
+            </div>
+            <div id="answerList" class="accordion-content">
                 </div>
         </div>
 
@@ -72,8 +104,9 @@
                 <button id="btnPause" class="btn hidden">Pause (Ctrl)</button>
                 <button id="btnDeal" class="btn-primary">Deal (Space)</button>
             </div>
-            <p class="status">Progress: <span id="countDisplay">0</span>/50</p>
+            <p class="status">Progress: <span id="countDisplay">0</span>/<span id="totalDisplay">0</span></p>
         </div>
+        
     </div>
     <script src="script.js"></script>
 </body>
