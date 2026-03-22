@@ -705,10 +705,12 @@ function undoCard() {
     }
 
     if (history.length > 0) {
+        const previousData = masterDeckData[history.length - 1];
         const previousCard = history[history.length - 1];
+
         previousCard.classList.remove('is-hidden-mobile');
-        updateAnswers(previousCard);
-        setTimeout(() => speak(previousCard.querySelector('.q-text').innerText), 50);
+        updateAnswers(previousData);
+        setTimeout(() => speak(previousData.q), 50);
     } else {
         // Nếu undo về tận câu đầu tiên (hết history), ẩn bảng câu trả lời đi
         const accordion = document.getElementById('answerAccordion');
@@ -910,23 +912,28 @@ btnPause.onclick = togglePause;
 
 // Keyboard Shortcuts
 window.addEventListener('keydown', (e) => { 
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+
     if (e.code === 'Space') { e.preventDefault(); dealCard(); }
     if (e.key === 'Control') { e.preventDefault(); togglePause(); }
     if (e.key === 'Alt') { e.preventDefault(); undoCard(); }
 
-    // --- LOGIC MỚI: Bấm phím số để đọc câu trả lời ---
-    if (e.key >= '1' && e.key <= '9') {
-        // Tìm nút loa có data-index tương ứng với phím vừa bấm
-        const targetBtn = document.querySelector(`.btn-ans-speak[data-index="${e.key}"]`);
+    // Xử lý phím số 1, 2, 3
+    // Dùng regex để bắt cả phím số hàng phím chữ và phím số bên Numpad
+    if (/^[1-9]$/.test(e.key)) {
+        const index = e.key;
+        const targetBtn = document.querySelector(`.btn-ans-speak[data-index="${index}"]`);
         
+        console.log("Phím bấm:", index, "Nút tìm thấy:", targetBtn); // Dòng này để debug trên GitHub
+
         if (targetBtn) {
             e.preventDefault();
-            // Kích hoạt sự kiện click của nút đó (nút này đã có sẵn hàm speak)
             targetBtn.click();
             
-            // Hiệu ứng nháy nhẹ nút loa để người dùng biết phím đã nhận
-            targetBtn.style.transform = "scale(1.3)";
-            setTimeout(() => targetBtn.style.transform = "scale(1)", 150);
+            // Hiệu ứng nháy màu để biết đã nhận phím
+            const parent = targetBtn.parentElement;
+            parent.style.backgroundColor = "#e7f1ff";
+            setTimeout(() => parent.style.backgroundColor = "", 200);
         }
     }
 });
