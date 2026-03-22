@@ -806,9 +806,11 @@ function updateAnswers(questionObj) {
         const isAI = aiAnswerTick && aiAnswerTick.checked && questionObj.answerAI;
         item.className = isAI ? 'answer-item ai-style' : 'answer-item';
         
-        item.innerHTML = `
+       item.innerHTML = `
             <span class="ans-text">${isAI ? '🤖 ' : ''}${index + 1}. ${text}</span>
-            <button class="btn-play-ans" onclick="speak('${text.replace(/'/g, "\\'")}')">🔊</button>
+            <button class="btn-play-ans btn-ans-speak" 
+                    data-index="${index + 1}" 
+                    onclick="speak('${text.replace(/'/g, "\\'")}')">🔊</button>
         `;
         answerList.appendChild(item);
     });
@@ -911,6 +913,22 @@ window.addEventListener('keydown', (e) => {
     if (e.code === 'Space') { e.preventDefault(); dealCard(); }
     if (e.key === 'Control') { e.preventDefault(); togglePause(); }
     if (e.key === 'Alt') { e.preventDefault(); undoCard(); }
+
+    // --- LOGIC MỚI: Bấm phím số để đọc câu trả lời ---
+    if (e.key >= '1' && e.key <= '9') {
+        // Tìm nút loa có data-index tương ứng với phím vừa bấm
+        const targetBtn = document.querySelector(`.btn-ans-speak[data-index="${e.key}"]`);
+        
+        if (targetBtn) {
+            e.preventDefault();
+            // Kích hoạt sự kiện click của nút đó (nút này đã có sẵn hàm speak)
+            targetBtn.click();
+            
+            // Hiệu ứng nháy nhẹ nút loa để người dùng biết phím đã nhận
+            targetBtn.style.transform = "scale(1.3)";
+            setTimeout(() => targetBtn.style.transform = "scale(1)", 150);
+        }
+    }
 });
 
 const syncSettings = () => {
