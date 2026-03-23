@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Topic Discussion</title>
+    <link rel="stylesheet" href="../style.css"> 
+    <link rel="stylesheet" href="topic-style.css">
+</head>
+<body>
+    <div class="container">
+        <h1 id="mainTopicHeader">Loading Topic...</h1>
+
+        <div class="top-controls">
+            <div id="settingsAccordion" class="settings-accordion">
+                <div class="settings-header" onclick="toggleSettingsAccordion()">
+                    <span>⚙️ Settings</span>
+                    <span id="settingsArrow" class="settings-arrow">▼</span>
+                </div>
+                
+                <div id="settingsContent" class="settings-content">
+                    <div class="settings-left">
+                        <div id="voiceTrigger" class="control-box">
+                            <label>Voice:</label>
+                            <span id="currentVoiceName">Female</span>
+                            <span class="arrow-down"></span>
+                        </div>
+                        <div class="control-box">
+                            <label>Topic:</label>
+                            <select id="topicSelect">
+                                <option value="0">1. Personal Information</option>
+                                <option value="1">2. Travelling</option>
+                                <option value="2">3. Family member</option>
+                            </select>
+                        </div>
+                        <!-- <div class="control-box">
+                            <label>Start from:</label>
+                            <input type="number" id="startFromId" value="1" min="1" style="width: 50px;">
+                        </div> -->
+                    </div>
+
+                    <div class="settings-right">
+                        <label><input type="checkbox" id="shuffleTopicTick"> Shuffle</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="topicMainArea" class="topic-scroll-container"></div>
+
+        <div class="footer-info">
+            <div class="button-group">
+                <button id="btnReset" class="btn">Reset</button>
+                <button id="btnUndo" class="btn">Undo</button>
+                <button id="btnNextTopic" class="btn-primary">Next Topic</button>
+            </div>
+            <p class="status">Progress: <span id="progressCurrent">1</span>/<span id="progressTotal">12</span></p>
+        </div>
+    </div>
+    
+    <div id="debugOverlay" class="debug-overlay hidden">
+        <div class="debug-content">
+            <h3>Available System Voices <button id="closeDebug">X</button></h3>
+            <div class="table-scroll"><table id="voiceTable"><tbody></tbody></table></div>
+        </div>
+    </div>
+
+    <script src="topic-script.js"></script>
+</body>
+</html>

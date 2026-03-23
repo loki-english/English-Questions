@@ -1,0 +1,104 @@
+#mainTopicHeader {
+    font-size: 1.8rem;
+    color: #2d3436;
+    text-transform: uppercase;
+    margin-bottom: 0px;
+    letter-spacing: 1px;
+    display: inline-block;
+    padding-bottom: 5px;
+}
+
+.topic-scroll-container {
+    background: #f8f9fa;
+    border-radius: 20px;
+    padding: 20px;
+    margin: 20px 0;
+    text-align: left;
+    max-height: 450px;
+    overflow-y: auto;
+}
+
+.topic-title {
+    text-align: center;
+    border-bottom: 2px solid #bababa25;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.topic-section {
+    margin-bottom: 30px;
+    border-bottom: 1px dashed #ccc;
+    padding-bottom: 15px;
+}
+
+.topic-section.active-section {
+    opacity: 1; 
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px dashed #ccc;
+}
+
+.topic-section.active-section .q-row strong {
+    color: #e363a3; 
+    font-size: 1.15rem;
+}
+
+.topic-section.active-section .hints p {
+    color: #333;
+    font-weight: 500;
+}
+
+.topic-section.active-section .hints p strong {
+    color: #e38163;
+}
+
+.q-row { cursor: pointer; font-size: 1.1rem; margin-bottom: 10px; }
+.q-row:hover { color: #d63384; }
+
+.hints p {
+    font-size: 0.95rem;
+    margin: 5px 0;
+    /* cursor: pointer; */
+    padding: 5px;
+    border-radius: 5px;
+}
+/* .hints p:hover { background: #eef2ff; } */
+
+/* Style cho khung Answer giống phác thảo */
+.answer-accordion {
+    /* border: 1px solid #ddd; */
+    border-radius: 8px;
+    margin-top: 10px;
+}
+.ans-header {
+    display: flex; 
+    padding: 5px;
+    background: #fff;
+    cursor: pointer;
+    justify-content: space-between;
+    border-radius: 10px;
+    font-weight: 600;
+    color: #bcbcbc;
+}
+.ans-content {
+    display: none;
+    padding: 15px;
+    background: #fff;
+    border-top: 1px solid #eee;
+}
+.ans-content  p{
+    margin: 0;
+    flex: 1;
+    line-height: 1.5;
+    color: #444;
+}
+.ans-content.show { display: flex !important; justify-content: space-between; align-items: center; }
+.btn-ans-speak {
+    background: #e7f1ff;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    flex-shrink: 0; /* Không cho nút loa bị bóp méo */
+}
