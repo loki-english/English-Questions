@@ -10,21 +10,21 @@ const originalTopicData = [
         questions: [
             {
                 q: "What do you like to do in your free time?",
-                tl: "sử dụng nền tảng MXH -> Xem video thú vị & đọc tin tức cần thiết",
-                mr: "trò chuyện -> bạn -> thư giãn & giảm stress",
-                ans: "In my free time, I usually use social media platforms to watch interesting videos and read necessary news. Also, I like chatting with my friends to relax and reduce stress."
+                tl: "Sử dụng nền tảng MXH -> Xem video thú vị & đọc tin tức cần thiết",
+                mr: "Trò chuyện với bạn -> Thư giãn & giảm stress",
+                ans: "I usually use social media platforms in my free time because I can watch interesting videos and read necessary news. Sometimes, I often chat with my friends (on Facebook or TikTok) to relax and reduce stress."
             },
             {
                 q: "What do you think about yourself?",
-                tl: "có trách nhiệm - chăm sóc gia đình - cố gắng hết sức - đạt được mục đích",
-                mr: "Hy vọng - kiếm nhiều tiền hơn - có cuộc sống tốt hơn",
-                ans: "I think I am a responsible person who always takes care of my family. I always try my best to achieve my goals. In the future, I hope to earn more money and have a better life."
+                tl: "Có trách nhiệm - Chăm sóc gia đình - Cố gắng hết sức - Đạt được mục đích",
+                mr: "Hy vọng - Kiếm nhiều tiền hơn - Có cuộc sống tốt hơn",
+                ans: "I think I'm responsible, because I always take care of my family and try my best to achieve my goals. Besides, I hope that I can earn more money to have a better life."
             },
             {
                 q: "What is your plan for your future?",
-                tl: "tương lai gần - học tiếng Anh - cải thiện kỹ năng nói TA & đổi việc -> Chán công việc hiện tại",
-                mr: "5 năm sau -> có nhà riêng - còn sống với gia đình/ba mẹ",
-                ans: "In the near future, I plan to learn English to improve my speaking skills and change my job because I'm bored with my current one. 5 years later, I hope to have my own house and still live with my family."
+                tl: "Tương lai gần - Học tiếng Anh - Cải thiện kỹ năng nói TA & đổi việc -> Chán công việc hiện tại",
+                mr: "5 năm sau - Có nhà riêng -> Hiện tại - Sống cùng ba mẹ",
+                ans: "In the near future, I plan to learn English to improve my english speaking skills and switch job, because I am very bored with my current job. After five years later, I want to have my own house with my family, because right now, I'm still living with my parents."
             }
         ]
     },
@@ -35,116 +35,116 @@ const originalTopicData = [
             {
                 q: "Why do you think traveling is important?",
                 tl: "Quan trọng -> Cách tốt nhất - mở rộng kiến thức - con người, văn hóa, lịch sử",
-                mr: "tạo ra kỷ niệm đẹp - gia đình - chụp hình - lưu giữ khoảnh khắc",
-                ans: "I think traveling is important because it's the best way to expand my knowledge about people, culture, and history. Moreover, it helps create beautiful memories with my family through photos."
+                mr: "Tạo ra kỷ niệm đẹp - gia đình - chụp hình - lưu giữ khoảnh khắc",
+                ans: "I think travelling is very important, because it is the best way to broaden my knowledge about people, cultures, and histories. Besides, I can create beautiful memories with my family by taking photos to capture special moments."
             },
             {
                 q: "Do you prefer traveling alone or with others? Why?",
-                tl: "với người khác - đặc biệt gia đình & bạn bè -> vui hơn & an toàn hơn",
-                mr: "nhận được hỗ trợ - giải quyết vấn đề - chuyến đi & mở rộng quan hệ",
-                ans: "I prefer traveling with others, especially my family and friends, because it is more fun and safer. I can get support to solve problems during the trip and expand my relationships."
+                tl: "Với người khác - Đặc biệt gia đình & bạn bè -> Vui hơn & an toàn hơn du lịch một mình",
+                mr: "Nhận được hỗ trợ - Giải quyết vấn đề - Chuyến đi & mở rộng quan hệ",
+                ans: "I prefer travelling with others, especially my family and my friends, because it is more fun and safer than traveling alone. On top of that, I can receive support to solve my problems during my trip and widen my relationship."
             },
             {
                 q: "What country or city do you want to visit in the future?",
-                tl: "Thăm Hanoi -> Lịch sử lâu đời - đền, chùa & lăng tẩm",
-                mr: "chào đón người nước ngoài & sẵn lòng - cung cấp sự giúp đỡ - nếu cần",
-                ans: "I want to visit Hanoi in the future because of its long history with many temples, pagodas, and monuments. People there are very welcoming to foreigners and always ready to help."
+                tl: "Thăm Hanoi -> Lịch sử lâu đời - Đền, chùa & lăng tẩm",
+                mr: "Chào đón người nước ngoài & sẵn lòng - Cung cấp sự giúp đỡ - Nếu cần",
+                ans: "I want to visit Hanoi capital in the future, because it has a long-lasting history with many temples, pagodas, and mausoleums. Plus, people there are very welcoming to foreigners and they are willing to provide support if needed."
             }
         ]
     },
-    {
+  {
         id: 3,
         title: "FAMILY MEMBER",
         questions: [
             {
                 q: "What do your family usually do together?",
-                tl: "ăn tối -> không có nhiều thời gian - sáng & trưa - bận rộn - công việc & học tập",
-                mr: "bữa tối - thời gian tốt nhất - nói chuyện & chia sẻ vấn đề sống",
-                ans: "My family usually has dinner together because we are very busy with work and study in the morning and afternoon. Dinner is the best time for us to talk and share everything about our lives."
+                tl: "Ăn tối cùng nhau -> Không có nhiều thời gian - Sáng & trưa - Bận rộn - Công việc & học tập",
+                mr: "Bữa tối - Thời gian tốt nhất - Nói chuyện & chia sẻ vấn đề - Cuộc sống",
+                ans: "We usually have dinner together, because we don't have much time in the morning and in the afternoon and we are very busy with our work and study, so dinner is the best time for us to talk and share problems in life."
             },
             {
                 q: "Who do you spend the most time with in your family?",
-                tl: "Dành phần lớn thời gian - mẹ -> kiên nhẫn, quan tâm, và thấu hiểu",
-                mr: "lắng nghe - cho lời khuyên - chia sẻ vấn đề & gặp rắc rối -> tin tưởng nhất",
-                ans: "I spend the most time with my mother because she is patient, caring, and understanding. She always listens and gives me good advice when I share my problems; I trust her the most."
+                tl: "Dành phần lớn thời gian - Mẹ -> Kiên nhẫn, quan tâm, và thấu hiểu",
+                mr: "Lắng nghe - Cho lời khuyên - Chia sẻ vấn đề & gặp rắc rối -> Tin tưởng nhất",
+                ans: "I spend (the) most time with my mother because she is patient, caring and understanding. She always listens to me and gives me advice when I share my issues or get into trouble. That's why she is the one I believe (the) most."
             },
             {
                 q: "What makes your family special?",
                 tl: "Đặc biệt -> Chăm sóc & lo lắng -> Bị bệnh - Bên cạnh & đưa đi BV",
-                mr: "biết ơn - sự quan tâm và hỗ trợ",
-                ans: "My family is special because we always take care of each other. When I am sick, they stay by my side and take me to the hospital. I am very grateful for their care and support."
+                mr: "Biết ơn - Sự quan tâm và hỗ trợ",
+                ans: "My family is very special to me, because my parents always take care of me and worry about me. Besides, when I get sick, they always stand by me and take me to the hospital. That's why I am very grateful for their care and support."
             }
         ]
     },
-    {
+   {
         id: 4,
         title: "DAILY ROUTINE",
         questions: [
             {
                 q: "What is your typical day like?",
-                tl: "thức dậy 7h -> ăn sáng -> nhà hàng gần -> đi làm - xe máy - 30'",
-                mr: "tại công việc, viết báo cáo - họp với đồng nghiệp - gặp khách hàng - hoàn thành nhiệm vụ - kiểm tra email. Về nhà 7h - ăn tối với gia đình - ngủ 10h",
-                ans: "My typical day starts at 7 AM. I have breakfast at a nearby restaurant and then drive to work by motorbike for 30 minutes. At work, I write reports, meet colleagues, and finish my tasks. I go home at 7 PM to have dinner with my family and go to sleep at 10 PM."
+                tl: "Thức dậy 7h -> Ăn sáng - Nhà hàng gần -> Đi làm - Xe máy - 30'",
+                mr: "Tại công việc - Viết báo cáo - Họp với đồng nghiệp - Gặp khách hàng - Hoàn thành nhiệm vụ - Kiểm tra email. Về nhà 7h - Ăn tối với gia đình - Ngủ 10h",
+                ans: "I usually wake up at around 7am, and I have breakfast at a nearby restaurant. After that, I get to work by motorbike and it takes me 30 minutes. At work, I have to write a report, have a meeting with my colleagues, meet my customers, complete my tasks, and check my emails. After work, I often comeback home at 7PM, have dinner with my family and go to bed at 10PM."
             },
             {
                 q: "Do you exercise or play sports regularly?",
-                tl: "Tập thể dục - chơi thể thao -> Đi gym - tập nặng / đi công viên - cầu lông - Bạn",
-                mr: "Cần thiết - Giữ sức khỏe & giữ cân đối / giảm cân & tránh bị bệnh",
-                ans: "I exercise regularly by going to the gym for heavy lifting or going to the park to play badminton with my friends. I think it is necessary to stay healthy, keep fit, lose weight, and avoid getting sick."
+                tl: "Tập thể dục - Chơi thể thao -> Đi gym - Tập nặng / Đi công viên - Cầu lông - Bạn",
+                mr: "Nó cần thiết -> Giữ sức khỏe, giữ cân đối, giảm cân & Tránh bị bệnh",
+                ans: "Yes, I exercise and play sports regularly, because I often go to the gym to work out or go to the park to play badminton with my friend. I think it's very necessary because I can stay healthy, keep fit, lose weight and avoid getting sick."
             },
             {
                 q: "What do you usually do on weekends?",
-                tl: "Đi nhà thờ (chùa) - Gia đình - Người theo công giáo / đạo phật - bắt buộc - mỗi tuần",
-                mr: "Hoạt động này - Mang may mắn & niềm tin - cuộc sống",
-                ans: "On weekends, I usually go to church or pagoda with my family. For religious people, this is a weekly must. This activity brings me luck and gives me more faith in life."
+                tl: "Đi Nhà thờ / Chùa - với gia đình -> Người theo công giáo / Đạo phật - Bắt buộc - Mỗi tuần",
+                mr: "Tin rằng - Hoạt động này - Mang lại may mắn & Niềm tin - Cuộc sống",
+                ans: "On weekends, I often go to the church (pagoda) with my family, because I'm a catholic (buddhists) so it's required to do it every week. I believe that this activity can bring me good luck, and a belief in my life."
             }
         ]
     },
     {
         id: 5,
-        title: "FOOD AND DRINK",
+        title: "FOOD",
         questions: [
             {
-                q: "What is your favorite food or drink?",
-                tl: "Thích ăn Phở -> Món ăn truyền thống - Việt Nam",
-                mr: "Nước dùng đậm đà - thịt bò tươi & bánh phở mềm -> Thơm ngon",
-                ans: "My favorite food is Pho, which is a traditional Vietnamese dish. I love its rich broth, fresh beef, and soft noodles. It is very delicious."
+                q: "Do you enjoy cooking?",
+                tl: "Ghét -> Không nấu giỏi & Tốn nhiều thời gian - Đi chợ, chuẩn bị nguyên liệu, nấu ăn & Rửa chén",
+                mr: "Cố gắng - Học nấu món ăn - Gia đình - Già",
+                ans: "No, I hate cooking, because I don't cook well and it takes me a lot of time to go to the market, prepare ingredients, do the cooking, and wash the dishes, but I will try to learn how to cook some dishes for my family when I get old."
             },
             {
-                q: "Do you prefer eating at home or at a restaurant? Why?",
-                tl: "Thích ăn ở nhà -> Không gian ấm cúng - gia đình",
-                mr: "Tự nấu ăn -> Sạch sẽ, an toàn & tiết kiệm tiền",
-                ans: "I prefer eating at home because of the cozy atmosphere with my family. Also, cooking by myself is cleaner, safer, and helps me save more money."
+                q: "Do you eat meals with your family or alone?",
+                tl: "Dùng bữa - Gia đình -> Dành thời gian - Ăn tối -> Thời gian tuyệt vời - Tụ họp - Nói về cuộc sống hằng ngày - Xin lời khuyên - Ba mẹ",
+                mr: "Bữa tối - Giúp - Xây dựng mối quan hệ tốt & Gần gũi hơn",
+                ans: "I usually eat meals with my family, because we often spend time having dinner together. It's a wonderful time when we can gather, talk about our daily lives, and ask for advice from my parents. Besides, dinner can help us build a good relationship and become closer."
             },
             {
-                q: "What is a traditional dish in your country?",
-                tl: "Bánh Chưng -> Dịp Tết - làm từ gạo nếp, thịt lợn, đậu xanh",
-                mr: "Biểu tượng của lòng biết ơn -> Tổ tiên & đất trời",
-                ans: "Banh Chung is a traditional dish in my country, especially during the Tet holiday. It's made from sticky rice, pork, and mung beans. It symbolizes gratitude to our ancestors."
+                q: "Do you prefer eating at a restaurant?",
+                tl: "Có -> Thức ăn - Ngon hơn - Bầu không khí - Ấm áp",
+                mr: "Nhà hàng sang trọng - Tổ chức tiệc sinh nhật - Thành viên gia đình - Chụp ảnh - Chia sẻ mạng xã hội",
+                ans: "Yes, I prefer eating at a restaurant, because the food is more delicious and the atmosphere is very cozy. Plus, at the fancy restaurant, I can celebrate birthday parties with my family members, and snap some photos to share on social media platforms such as Facebook, TikTok and Instagram."
             }
         ]
     },
-    {
+   {
         id: 6,
-        title: "WORK / JOB",
+        title: "WORK",
         questions: [
             {
-                q: "What do you do for a living?",
-                tl: "Làm nhân viên văn phòng -> Công ty xuất nhập khẩu",
-                mr: "Công việc bận rộn -> Kiểm tra hóa đơn & soạn thảo hợp đồng",
-                ans: "I am an office worker at an import-export company. My job is quite busy as I have to check invoices and draft contracts every day."
+                q: "Do you enjoy your job?",
+                tl: "Có - Yêu công việc -> Say mê - Kiếm tiền -> Cái - giúp - Chi trả chi phí sinh hoạt - Giảm gánh nặng tài chính của gia đình",
+                mr: "Có nhiều cơ hội - Được thăng chức - Làm việc hiệu quả",
+                ans: "Yes, I love my job, because I'm passionate about making money, which can help me pay my living expenses and reduce my family's financial burden. Besides, I can have many opportunities to get promotion if I work efficiently."
             },
             {
                 q: "What are your responsibilities at work?",
-                tl: "Quản lý hồ sơ -> Làm việc với khách hàng & đối tác",
-                mr: "Đảm bảo hàng hóa -> Vận chuyển đúng hạn & đúng số lượng",
-                ans: "My main responsibilities are managing documents and working with customers and partners. I also have to ensure that all goods are delivered on time and in the correct quantity."
+                tl: "Làm giấy tờ, liên hệ khách hàng, làm báo cáo -> Nhiệm vụ này - Không khó nhưng tốn thời gian",
+                mr: "Phải đảm bảo - Hoàn thành đúng hạn - Công việc có lợi - Cải thiện kiến thức chuyên môn & Kỹ năng thực tế",
+                ans: "At work, I have to do the paperwork, contact my customers, and make a report. I think these tasks are not difficult but time-consuming and I have to make sure that everything is completed on time. I find my work very rewarding as I can improve my professional knowledge and practical skills."
             },
             {
-                q: "Do you like your job? Why or why not?",
-                tl: "Khá thích -> Đồng nghiệp thân thiện & sếp tâm lý",
-                mr: "Tuy nhiên -> Đôi khi áp lực vì khối lượng công việc lớn",
-                ans: "I quite like my job because my colleagues are friendly and my boss is very understanding. However, I sometimes feel pressured due to the heavy workload."
+                q: "What kind of job would you like to have in the future?",
+                tl: "Làm kinh doanh - Kiếm nhiều tiền - Tự chủ tài chính & Đến nước ngoài - Thực hiện ước mơ",
+                mr: "Ngán làm việc ở công ty hiện tại -> Làm việc vất vả - Với ít thu nhập",
+                ans: "I want to do business in the future, because I hope to earn enough money to be financially independent and visit many foreign countries to fulfill my dream. What's more, I am sick and tired of working for my current company because I have to work like a dog with a little income."
             }
         ]
     },
@@ -153,22 +153,22 @@ const originalTopicData = [
         title: "LEARNING ENGLISH",
         questions: [
             {
-                q: "Why are you learning English?",
-                tl: "Ngôn ngữ quốc tế -> Giao tiếp với người nước ngoài",
-                mr: "Tìm kiếm cơ hội việc làm tốt hơn -> Thu nhập cao hơn",
-                ans: "I am learning English because it is an international language that helps me communicate with foreigners. Moreover, I want to find better job opportunities with a higher salary."
+                q: "Why do you think learning English is important?",
+                tl: "Quan trọng - Giao tiếp - Quốc gia khác - Học văn hóa và lối sống",
+                mr: "Cơ hội việc làm - tương lai -> Làm cho công ty nước ngoài - Thu nhập tốt",
+                ans: "I think learning english is important, because I can communicate with people from different countries to learn about their cultures and lifestyles. What's more, I can have many job opportunities in the future, as I can work for international companies and earn a decent income."
             },
             {
-                q: "What is the most difficult thing about learning English?",
-                tl: "Kỹ năng nói -> Khó phát âm đúng & thiếu tự tin",
-                mr: "Từ vựng & Ngữ pháp -> Quá nhiều quy tắc & từ mới dễ quên",
-                ans: "The most difficult thing for me is speaking because I find it hard to pronounce correctly and I lack confidence. Also, there are too many grammar rules and new words to remember."
+                q: "What do you usually do to practice speaking English?",
+                tl: "Với giáo viên - Từ vựng mới & Quy tắc ngữ pháp - Hội thoại hằng ngày",
+                mr: "Xem lại bài cũ - Nhớ từ mới - Trả lời câu hỏi tiếng Anh - Tự bản thân",
+                ans: "I often practice speaking English with my teacher, because he usually teaches me new vocabulary and grammar rules which are necessary for daily conversations. Besides, I also review old lessons to remember new words and try to answer some english questions by myself."
             },
             {
-                q: "How do you practice your English skills?",
-                tl: "Xem phim & nghe nhạc Âu Mỹ -> Cải thiện nghe",
-                mr: "Dùng ứng dụng trên điện thoại -> Học từ mới mỗi ngày",
-                ans: "I practice my English by watching English movies and listening to music to improve my listening skills. I also use mobile apps to learn new words every day."
+                q: "Do you think practicing English every day is necessary?",
+                tl: "Đồng ý - Thực tập Tiếng Anh - Cần thiết -> Cách tốt nhất - Cải thiện trôi chảy & Phản xạ",
+                mr: "Thường ngày, lấy sách - Luyện kỹ năng nói & Học thuộc lòng từ - Tạo ra sự tiến bộ tiếng Anh hội thoại",
+                ans: "I agree that practicing english every day is necessary, because it's the best way to improve my fluency and reflex. So, on a daily basis, I usually take out my book to practice my speaking skills and learn by heart new words. By this way, I have made progress in my conversational english."
             }
         ]
     },
@@ -177,25 +177,73 @@ const originalTopicData = [
         title: "SHOPPING",
         questions: [
             {
-                q: "Do you enjoy shopping? Why or why not?",
-                tl: "Rất thích -> Cách để thư giãn sau giờ làm",
-                mr: "Thích mua quần áo & đồ gia dụng -> Cảm thấy hạnh phúc",
-                ans: "I really enjoy shopping because it's a great way to relax after work. I love buying new clothes and household items; it makes me feel happy."
+                q: "Where do you usually shop: online or in stores?",
+                tl: "Mua online -> Thuận tiện & Tiết kiệm thời gian -> Hơn nữa - Nhiều sự lựa chọn, giá cả, và sản phẩm - So sánh",
+                mr: "Tuy nhiên - Thỉnh thoảng - Tại cửa hàng - Phụ kiện, thiết bị điện tử, đồ ăn vặt & Quần áo -> Kiểm tra chất lượng và Thử chúng",
+                ans: "I usually shop online because it's convenient and time-saving. What's more, there are many choices, prices and products to compare. However, I sometimes buy things in stores such as accessories, electronic devices, snacks, and clothes, as I can check their quality and try them on."
             },
             {
-                q: "Do you prefer shopping online or in stores?",
-                tl: "Thích mua sắm trực tuyến -> Tiện lợi & tiết kiệm thời gian",
-                mr: "Dễ dàng so sánh giá -> Có nhiều mã giảm giá",
-                ans: "I prefer shopping online because it is very convenient and time-saving. I can easily compare prices and find many discount codes."
+                q: "Do you like to go shopping alone or with friends?",
+                tl: "Với bạn -> Giúp - Chọn quần áo phù hợp nhất -> Thêm nữa - Xin lời khuyên - kích thước, màu sắc & Phong cách - Hợp tôi nhất",
+                mr: "Điều đó - Làm cho mua sắm - Trở thành trải nghiệm thú vị",
+                ans: "I like shopping with my friends because they can help me choose the most suitable clothes. Plus, I can ask them for advice about sizes, colors and styles which suit me best. This makes shopping become an enjoyable experience."
             },
             {
-                q: "What was the last thing you bought?",
-                tl: "Một đôi giày thể thao mới -> Tuần trước",
-                mr: "Rất ưng ý -> Êm chân & thiết kế đẹp",
-                ans: "The last thing I bought was a pair of new sneakers last week. I am very satisfied with them because they are comfortable and have a nice design."
+                q: "Do you think men and women have different shopping habits?",
+                tl: "Khác - Men - Mua áo thun & Jeans - Cảm thấy thoải mái & Năng động - Đi chơi",
+                mr: "Women - Mua váy & Đầm - Khiến họ đẹp và Tự tin - Tham dự tiệc & Chụp hình (Phụ nữ có xu hướng trả giá)",
+                ans: "I think men and women have different shopping habits. Men often buy T-shirts and jeans, which make them feel comfortable and active to hang out with friends. Women often buy skirts and dresses, which make them beautiful and confident to attend parties and take photos. (Women tend to bargain for the best prices)."
             }
         ]
-    }
+    },
+    {
+        id: 9,
+        title: "HOBBIES",
+        questions: [
+            {
+                q: "Which hobbies do you usually do by yourself?",
+                tl: "Chạy bộ & Tập thể dục -> Giúp - Giữ sức khỏe & Giữ cân đối",
+                mr: "Bên cạnh đó - rất hiệu quả - Đốt mỡ & Giảm cân -> Phù hợp người thừa cân",
+                ans: "I usually go jogging and work out, as they can help me stay healthy and keep fit. Besides, they are very effective to burn fat and lose weight, so they are appropriate for overweight people."
+            },
+            {
+                q: "Which hobbies do you usually do with your friends?",
+                tl: "Đi câu cá & Chạy xe đạp -> Quên đi muộn phiền CV - Dành thời gian chất lượng với bạn",
+                mr: "Nghĩ -> Những hoạt động này - Cải thiện sức khỏe thể chất & Nâng cao Tâm trạng / Tinh thần",
+                ans: "I usually go fishing and go cycling with my friends, as I can forget all the downsides at work and spend quality time with my friends. I think these activities not only improve my physical health, but also boost my mood / spirit."
+            },
+            {
+                q: "What advantages and disadvantages do your hobbies have?",
+                tl: "Có nhiều bất lợi - Cái thứ nhất - Phải dành nhiều thời gian - Một số sở thích - thể thao & games -> Rất tốn thời gian & Tốn kém",
+                mr: "Cái bất lợi thứ 2 -> Một số sở thích - Rất nguy hiểm -> Tham gia - Nhảy dù & Bungee - Làm bị thương bản thân & Chết",
+                ans: "There are many disadvantages of hobbies. The first one is that people have to spend a lot of time on some hobbies like playing sports and playing games, which are very time-consuming and costly. The second disadvantages is that some hobbies are dangerous. When they take part in skydiving or bungee jumping, they can get injured themselves or even die."
+            }
+        ]
+    },
+    {
+        id: 10,
+        title: "PERSONALITIES",
+        questions: [
+            {
+                q: "How would you describe your personality?",
+                tl: "Biết quan tâm, Lạc quan & Tự lập - 1st - Giúp - Hỗ trợ - Vấn đề",
+                mr: "2nd - Tích cực - Suy nghĩ - Cố gắng - Mục tiêu - Cuối cùng - Ba mẹ - Chăm sóc & Tương lai",
+                ans: "I would describe myself as caring, optimistic, and independent. First, I think I am caring because I always help everyone around me and support them when they have problems. Second, I think I am optimistic, because I usually think positively and try my best to achieve my goals. Finally, I am independent, because I don't want to make my parents worry about my life and my future."
+            },
+            {
+                q: "What are your strengths?",
+                tl: "Giải quyết - Hỗ trợ - Hoàn thành - Làm việc tốt",
+                mr: "Cho cơ hội - Không cần - Không có - Kinh nghiệm",
+                ans: "I think I can solve problems quickly without supports from my colleagues and I always finish my work on time and effectively. That's why I think I can work well in your company if you give me opportunities to work with you. Besides, I don't need a high salary, because I know that I don't have experience."
+            },
+            {
+                q: "What are your weaknesses?",
+                tl: "Không giỏi - Không thể giao tiếp - Có vấn đề",
+                mr: "Tự giải quyết - Sửa",
+                ans: "I think I'm not good at teamwork, because I don't communicate well with other people, and sometimes when I have problems, I just want to solve them myself, but I'll try to fix it."
+            }
+        ]
+    },
 ];
 let workingTopics = [...originalTopicData]; 
 let currentTopicIndex = 0;
