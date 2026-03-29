@@ -232,8 +232,8 @@ const originalTopicData = [
             },
             {
                 q: "What are your strengths?",
-                tl: "Giải quyết - Hỗ trợ - Hoàn thành - Làm việc tốt",
-                mr: "Cho cơ hội - Không cần - Không có - Kinh nghiệm",
+                tl: "Giải quyết - Hỗ trợ - Hoàn thành - Làm việc tốt - Cho cơ hội",
+                mr: "Không cần lương cao -> Không có - Kinh nghiệm",
                 ans: "I think I can solve problems quickly without supports from my colleagues and I always finish my work on time and effectively. That's why I think I can work well in your company if you give me opportunities to work with you. Besides, I don't need a high salary, because I know that I don't have experience."
             },
             {
