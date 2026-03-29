@@ -244,6 +244,30 @@ const originalTopicData = [
             }
         ]
     },
+    {
+    id: 11,
+    title: "FRIENDS",
+    questions: [
+        {
+            q: "Why are friends important to you?",
+            tl: "Quan trọng -> Cuộc sống - vui hơn -> Buồn - An ủi - Lời khuyên",
+            mr: "Vui - mừng -> Cần - Bạn tốt",
+            ans: "My friends are very important to me because they make my life happier. When I feel sad, they will comfort me and give me good advice to become better. When I feel happy, they will cheer with me. That's why I need good friends."
+        },
+        {
+            q: "What do you usually do with your friends?",
+            tl: "Mua sắm -> Quần áo & phụ kiện - Phù hợp",
+            mr: "Dùng bữa - Nói xấu & Cười nhạo - Tuyệt vời",
+            ans: "We usually go shopping together, as they can choose clothes and accessories that fit me well. Besides, we often have meals together to talk behind someone's back and make fun of them. I think it's the best time in my life."
+        },
+        {
+            q: "Is it easy for you to make new friends? Why?",
+            tl: "Cởi mở - Giao tiếp - Kết bạn -> Hỏi - Hội thoại",
+            mr: "Gần gũi -> Tự tin",
+            ans: "Yes it is. I think as long as you are easy-going and able to communicate well with other people, you can easily make friends. Besides, by asking simple questions about names, families, and hometowns, you can create a conversation with anyone and become closer to them. Finally, you have to be confident in yourself."
+        }
+    ]
+},
 ];
 let workingTopics = [...originalTopicData]; 
 let currentTopicIndex = 0;
