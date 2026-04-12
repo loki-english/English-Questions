@@ -267,7 +267,55 @@ const originalTopicData = [
             ans: "Yes it is. I think as long as you are easy-going and able to communicate well with other people, you can easily make friends. Besides, by asking simple questions about names, families, and hometowns, you can create a conversation with anyone and become closer to them. Finally, you have to be confident in yourself."
         }
     ]
-},
+    },
+    {
+    id: 12,
+    title: "BIRTHDAY PARTY",
+    questions: [
+        {
+            q: "Do you like a big party or a small party?",
+            tl: "Nhỏ -> Không nhiều bạn - Ấm cúng - Nói chuyện riêng - Chia sẻ vấn đề - Cuộc sống",
+            mr: "Lớn - Ồn ào & Đông đúc - mệt mỏi & Chán - Không có thời gian - Bạn thân",
+            ans: "I prefer a small party, because I don't have many friends and I think a small party is cozy to talk privately and share problems in life. On the other hand, I find big parties noisy and crowded, which make me feel tired and bored, because I have no time for my close friends."
+        },
+        {
+            q: "What do people do at birthday parties?",
+            tl: "Trước tiệc - Trang trí - Hoa & Bong bóng & Quà - Tạo nền đẹp - Chuẩn bị thức ăn ngon & Đồ uống - Khách mời",
+            mr: "Trong suốt buổi tiệc - Ăn tiệc - Uống rượu - Hát karaoke - Nhảy cùng nhau. Cuối tiệc - Tặng quà - Chụp hình - Lưu lại kỉ niệm",
+            ans: "Before the party, people usually decorate their house with flowers, balloons, and gifts to create a beautiful background for their birthday party. They also prepare delicious food and drinks for their guests. During the party, people often enjoy meals, drink wine, sing karaoke, and dance together. At the end of the party, they give gifts to the birthday person and take photos to preserve memories."
+        },
+        {
+            q: "Are birthday parties important to you? Why?",
+            tl: "Có -> Cơ hội để gặp bạn bè & Họ hàng - Ngày bận rộn",
+            mr: "Xảy ra - Mỗi năm một lần - Nên tổ chức - Ghi nhớ - Ngày được sinh ra",
+            ans: "Yes, birthday parties are important to me, because it's an opportunity to meet my friends and relatives after busy days. Besides, it only happens once a year, so people should organize a party to remember the day they were born."
+        }
+    ]
+    },
+     {
+    id: 12,
+    title: "MARRIAGE",
+    questions: [
+        {
+            q: "At what age do people get married in your country?",
+            tl: "Tôi hông chắc, nhưng tôi nghĩ mọi người thường kết hôn khi họ 25 đến 30 tuổi, bởi vì ở độ tuổi này, suy nghĩ của họ chính chắn hơn và có trách nhiệm hơn với quyết định và cuộc sống của họ. ",
+            mr: "Ngoài ra, họ thường có một công việc ổn định trong giai đoạn này để có thể chăm sóc tốt cho con cái của họ.",
+            ans: "I'm not sure, but I think people usually get married when they are between 25 and 30 years old, because at this age, they are more mature and responsible for their decisions and their lives. Besides, they often have a stable job at this stage to take good care of their children."
+        },
+        {
+            q: "Do you think money can buy love?",
+            tl: "Còn tùy. Nếu một người quan tâm đến vật chất, tôi cho rằng họ sẽ chọn tiền thay vì tình yêu, vì tiền sẽ giúp họ có một cuộc sống ổn định và không phải lo lắng quá nhiều về thu nhập và công việc. ",
+            mr: ". Tuy nhiên, nếu người này không quan tâm đến vật chất, tôi nghĩ họ sẽ chọn tình yêu, vì họ mong tìm được một người phù hợp về tính cách và suy nghĩ. ",
+            ans: "It depends. If a person cares about material things, I would say they will choose money over love, because money will help them have a stable life and not worry too much about income and jobs. However, if the person doesn't care about material things, I think they will choose love, because they hope to find someone who is compatible in personality and thinking."
+        },
+        {
+            q: "What problems do married couples have?",
+            tl: "Tôi cũng không biết nữa, nhưng tôi đoán vấn đề lớn nhất là tiền. Khi không có đủ tiền để chăm lo cho gia đình, họ thường cảm thấy áp lực và thường xuyên cãi nhau. Ngoài ra, một vấn đề nữa là tư duy.",
+            mr: "Ví dụ, khi gặp vấn đề trong cuộc sống, nếu vợ hoặc chồng không có cùng suy nghĩ và cách giải quyết, họ rất dễ xảy ra xung đột.",
+            ans: "I don't know either, but I guess the biggest problem is money. When they don't have enough money to take care of their family, they usually feel stressed and often argue. Besides, another problem is about mindset. For example, when their wife or husband doesn't have the same thinking and solution, they are prone to conflicts."
+        }
+    ]
+    },
 ];
 let workingTopics = [...originalTopicData]; 
 let currentTopicIndex = 0;
